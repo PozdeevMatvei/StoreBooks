@@ -1,4 +1,4 @@
-﻿namespace StoreLib
+﻿namespace Store
 {
     public class Book
     {
