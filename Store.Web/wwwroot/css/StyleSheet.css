@@ -1,0 +1,116 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    color: #333333;
+    background-color: #ffffff;
+    font: normal 20px "Trebuchet MS", "Lucida Grande", Verdana, Sans-Serif;
+}
+
+/* Headings */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: normal;
+    margin: 10px 0 15px;
+}
+
+    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+        font-weight: normal;
+        border-bottom-width: 0;
+    }
+
+h1 {
+    font-size: 32px;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+h4, h5, h6 {
+    font-size: 20px;
+}
+
+/* Lists */
+
+ul, ol, dl {
+    margin: 15px 25px;
+    line-height: 2.0em;
+}
+
+ol {
+    margin-left: 30px;
+}
+
+ul {
+    list-style-type: square;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    font-weight: bold;
+    border-bottom: 1px dotted #333333;
+}
+
+    a:link {
+        color: #567ec4;
+        border-bottom-color: #567ec4;
+    }
+
+    a:visited {
+        color: #81a2c3;
+        border-bottom-color: #81a2c3;
+    }
+
+    a:hover, a:active {
+        color: #cc3333;
+        border-bottom-style: solid;
+        border-bottom-color: #cc3333;
+    }
+
+
+#header {
+    background-color: #363633;
+    padding: 2px;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+#navigation {
+    float: left;
+    clear: both;
+    width: 100%;
+    background-color: #eeeeee;
+    border-bottom: 1px solid #dddddd;
+}
+
+#content {
+    float: left;
+    padding: 20px 0;
+}
+
+#searchInput {
+    padding: 2px;
+    font-size: 20px;
+}
+
+/* Header */
+
+#header h1 {
+    font-size: 13px;
+    margin: 0;
+    padding: 20px 25px;
+}
+
+#header a {
+    border-bottom-width: 0;
+    color: #ffffff;
+}
+
