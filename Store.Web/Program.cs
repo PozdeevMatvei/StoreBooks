@@ -3,7 +3,8 @@ using Store.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<IBookRepository, BookRepository>();
+builder.Services.AddSingleton<IBookRepository, BookRepository>();
+builder.Services.AddSingleton<BookService>();
 
 var app = builder.Build();
 app.UseStaticFiles();
