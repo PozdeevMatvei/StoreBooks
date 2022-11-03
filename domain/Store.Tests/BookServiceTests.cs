@@ -16,12 +16,12 @@ namespace Store.Tests
 
             bookRepositoryStub.Setup(bookRepository => bookRepository
                 .GetAllByIsbn(It.IsAny<string>()))
-                .Returns(new[] { new Book(1, "", "", "") });
+                .Returns(new[] { new Book(1, "", "", "", "", 0m) });
 
 
             bookRepositoryStub.Setup(bookRepository => bookRepository
                 .GetAllByTitleOrAuthor(It.IsAny<string>()))
-                .Returns(new[] { new Book(2, "", "", "") });
+                .Returns(new[] { new Book(2, "", "", "", "", 0m) });
 
             var bookService = new BookService(bookRepositoryStub.Object);
 
@@ -38,12 +38,12 @@ namespace Store.Tests
 
             bookRepositoryStub.Setup(bookRepository => bookRepository
                 .GetAllByIsbn(It.IsAny<string>()))
-                .Returns(new[] { new Book(1, "", "", "") });
+                .Returns(new[] { new Book(1, "", "", "", "", 0m) });
 
 
             bookRepositoryStub.Setup(bookRepository => bookRepository
                 .GetAllByTitleOrAuthor(It.IsAny<string>()))
-                .Returns(new[] { new Book(2, "", "", "") });
+                .Returns(new[] { new Book(2, "", "", "", "", 0m) });
 
             var bookService = new BookService(bookRepositoryStub.Object);
 
