@@ -4,18 +4,10 @@
     ViewData["Title"] = "List books";
 }
 
-<table>
-    <thead>
-        <tr>
-            <td>BookId</td>
-            <td>Title</td>
-        </tr>
-    </thead>
-    <tr>
-        @foreach(var book in Model)
-        {
-            <td>@book.BookId</td>
-            <td>@book.Title</td>
-        }
-    </tr>
-</table>
+
+<ul>
+    @foreach(var book in Model)
+    {
+        <li><a href="@Url.Action("Index", "Book", new {bookId = book.BookId})">@book.Title</a></li>       
+    }
+</ul>

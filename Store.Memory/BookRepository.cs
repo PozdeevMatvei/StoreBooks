@@ -20,5 +20,10 @@
                                      || book.Author.Contains(query))
                          .ToArray();
         }
+
+        public Book GetById(int bookId)
+        {
+            return _books.Single(book => book.BookId == bookId);
+        }
     }
 }

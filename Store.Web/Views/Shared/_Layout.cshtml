@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 
-<html>
+<html lang="ru">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
@@ -12,13 +12,11 @@
             <input name="query" id="searchInput" style="width: 50%" placeholder="автор или название" />
             <button id="searchInput" type="submit">Искать</button>
         </form>
-    </div>   
-    <div id="navigation">
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>           
-        </ul>
-
-    </div>
+    </div> 
+       
+    <nav id="navigation">
+        <a id="navcontent" asp-controller="Home" asp-action="Index">Home</a>
+    </nav>
     <div>
         @RenderBody()
     </div>

@@ -88,7 +88,12 @@ a {
     clear: both;
     width: 100%;
     background-color: #eeeeee;
-    border-bottom: 1px solid #dddddd;
+    border-bottom: 1px solid #dddddd;  
+}
+
+#navcontent {
+    margin: 15px 25px;
+    line-height: 2.0em;
 }
 
 #content {
