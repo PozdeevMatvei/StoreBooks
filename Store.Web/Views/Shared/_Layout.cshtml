@@ -7,11 +7,23 @@
     <link rel="stylesheet" type="text/css" media="screen,projection" href="~/css/StyleSheet.css" />
 </head>
 <body>
-    <div id="header">
+    <div id="header" >
         <form method="get" asp-controller="search">
             <input name="query" id="searchInput" style="width: 50%" placeholder="автор или название" />
             <button id="searchInput" type="submit">Искать</button>
         </form>
+        <span>
+            @{              
+                if(Context.Session.TryGetCart(out Cart? cart) && cart?.TotalCount > 0)
+                {
+                    <a href="">Товаров: @cart.TotalCount на сумму: @cart.TotalPrice</a>
+                }
+                else
+                {
+                    @:Корзина пуста
+                }
+            }
+        </span>
     </div> 
        
     <nav id="navigation">
