@@ -8,6 +8,7 @@
             new Book(2, "ISBN 11111-12342", "C# 4.0", "Герберт Шилдт", "description", 8m),
             new Book(3, "ISBN 11111-12343", "Clear Code", "Роберт Мартин", "description", 12m)
         };
+       
 
         public Book[] GetAllByIsbn(string isbn)
         {
@@ -19,6 +20,16 @@
             return _books.Where(book => book.Title.Contains(query)
                                      || book.Author.Contains(query))
                          .ToArray();
+        }
+
+        public Book[] GetAllByIds(IEnumerable<int> bookIds)
+        {
+            var foundBooks = from book in _books
+                             join bookId in bookIds
+                             on book.BookId equals bookId
+                             select book;
+
+            return foundBooks.ToArray();
         }
 
         public Book GetById(int bookId)

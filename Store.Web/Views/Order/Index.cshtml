@@ -1,0 +1,35 @@
+﻿@model OrderModel
+
+@{
+    ViewData["Title"] = "Список товаров в корзине";
+}
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Название</th>
+            <th>Автор</th>
+            <th>Количество</th>
+            <th>Цена</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model.OrderItems)
+        {
+            <tr>
+                <td>@item.BookId</td>
+                <td>@item.Title</td>
+                <td>@item.Author</td>
+                <td>@item.Count</td>
+                <td>@item.Price</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3">Итого</td>
+            <td>@Model.TotalCount</td>
+            <td>@Model.TotalPrice</td>
+        </tr>
+    </tfoot>
+</table>
