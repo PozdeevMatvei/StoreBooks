@@ -35,7 +35,7 @@ namespace Store
         private static void ThrowIfInvalidCount(int count)
         {
             if (count <= 0)
-                throw new ArgumentOutOfRangeException("count by zero or negative number");
+                throw new ArgumentOutOfRangeException($"{nameof(count)} by zero or negative number.");
         }
     }
 }

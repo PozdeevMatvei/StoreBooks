@@ -17,8 +17,13 @@
 
         public Book[] GetAllByTitleOrAuthor(string query)
         {
-            return _books.Where(book => book.Title.Contains(query)
-                                     || book.Author.Contains(query))
+            if(string.IsNullOrEmpty(query))
+                throw new ArgumentNullException(nameof(query));
+
+
+
+            return _books.Where(book => book.Title.ToLower().Contains(query.ToLower()) 
+                                     || book.Author.ToLower().Contains(query.ToLower()))
                          .ToArray();
         }
 

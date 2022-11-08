@@ -11,6 +11,7 @@
             <th>Автор</th>
             <th>Количество</th>
             <th>Цена</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -20,8 +21,17 @@
                 <td>@item.BookId</td>
                 <td>@item.Title</td>
                 <td>@item.Author</td>
-                <td>@item.Count</td>
+                <td>
+                    <a type="button" asp-action="UpdateOrderItem" asp-controller="Order" asp-route-bookId="@item.BookId" asp-route-count="-1">-</a>
+                    @item.Count
+                    <a type="button" asp-action="UpdateOrderItem" asp-controller="Order" asp-route-bookId="@item.BookId">+</a>
+                </td>
                 <td>@item.Price</td>
+                <td>
+                    <form asp-action="RemoveOrderItem" asp-controller="Order" asp-route-bookId="@item.BookId"> 
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>

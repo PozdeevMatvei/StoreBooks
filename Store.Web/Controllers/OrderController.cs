@@ -27,30 +27,36 @@ namespace Store.Web.Controllers
         }
         public IActionResult AddItemInOrder(int bookId)
         {
-            Order order;
-            //HttpContext.Session.GetCart(out cart);
-
-            if (HttpContext.Session.TryGetCart(out Cart? cart))
-            {
-                order = _orderRepository.GetById(cart!.OrderId);
-            }
-            else
-            {
-                order = _orderRepository.Create();
-                cart = new Cart(order.OrderId);
-            }
+            var (cart, order) = CreateOrGetCartAndOrder();
 
             var book = _bookRepository.GetById(bookId);
             order.AddOrUpdateOrderItem(book, 1);
-            _orderRepository.Update(order);
 
-            cart.TotalCount = order.TotalCount;
-            cart.TotalPrice = order.TotalPrice;
+            SaveOrderAndCart(order, cart);
 
-            HttpContext.Session.Set(cart);
+            return RedirectToAction("Index", "Book", new { BookId = bookId });
+        }     
 
-            return RedirectToAction("Index", "Book", new { BookId = bookId});
+        public IActionResult RemoveOrderItem(int bookId)
+        {
+            (Cart cart, Order order) = CreateOrGetCartAndOrder();
+
+            order.RemoveOrderItem(bookId);
+            SaveOrderAndCart(order, cart);
+
+            return RedirectToAction("Index");
         }
+        public IActionResult UpdateOrderItem(int bookId, int count = 1)
+        {
+            (Cart cart, Order order) = CreateOrGetCartAndOrder();
+            var book = _bookRepository.GetById(bookId);
+
+            order.AddOrUpdateOrderItem(book, count);
+            SaveOrderAndCart(order, cart);
+
+            return RedirectToAction("Index");
+        }
+        //todo: добавить методы удаления и редактирования элементов заказа
         private OrderModel Map(Order order)
         {
             var bookIds = order.Items.Select(book => book.BookId);
@@ -75,5 +81,29 @@ namespace Store.Web.Controllers
                 TotalPrice = order.TotalPrice
             };
         }
+        private (Cart cart, Order order) CreateOrGetCartAndOrder()
+        {
+            Order order;
+            if (HttpContext.Session.TryGetCart(out Cart? cart))
+            {
+                order = _orderRepository.GetById(cart!.OrderId);
+            }
+            else
+            {
+                order = _orderRepository.Create();
+                cart = new Cart(order.OrderId);
+            }
+            return (cart, order);
+        }
+        private void SaveOrderAndCart(Order order, Cart cart)
+        {
+            _orderRepository.Update(order);
+
+            cart.TotalCount = order.TotalCount;
+            cart.TotalPrice = order.TotalPrice;
+
+            HttpContext.Session.Set(cart);
+        }
+
     }
 }
