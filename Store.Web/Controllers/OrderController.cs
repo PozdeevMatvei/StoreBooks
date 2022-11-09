@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.Web.Models;
+using Store.Messages;
+using System.Text.RegularExpressions;
 
 namespace Store.Web.Controllers
 {
@@ -7,11 +9,14 @@ namespace Store.Web.Controllers
     {
         private readonly IBookRepository _bookRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly INotificationService _notificationService;
 
-        public OrderController(IBookRepository bookRepository, IOrderRepository orderRepository)
+        public OrderController(IBookRepository bookRepository, IOrderRepository orderRepository,
+            INotificationService notificationService)
         {
             _bookRepository = bookRepository;
             _orderRepository = orderRepository;
+            _notificationService = notificationService;
         }
 
         public IActionResult Index()
@@ -25,6 +30,7 @@ namespace Store.Web.Controllers
             }
             return View("Empty");
         }
+        [HttpPost]
         public IActionResult AddItemInOrder(int bookId)
         {
             var (cart, order) = CreateOrGetCartAndOrder();
@@ -35,8 +41,8 @@ namespace Store.Web.Controllers
             SaveOrderAndCart(order, cart);
 
             return RedirectToAction("Index", "Book", new { BookId = bookId });
-        }     
-
+        }
+        [HttpPost]
         public IActionResult RemoveOrderItem(int bookId)
         {
             (Cart cart, Order order) = CreateOrGetCartAndOrder();
@@ -56,7 +62,59 @@ namespace Store.Web.Controllers
 
             return RedirectToAction("Index");
         }
-        //todo: добавить методы удаления и редактирования элементов заказа
+        [HttpPost]
+        public IActionResult SendConfirmationCode(int orderId, string cellPhone)
+        {
+            var order = _orderRepository.GetById(orderId);
+            var orderModel = Map(order);
+
+            if(!IsValidCellPhone(cellPhone))
+            {
+                orderModel.Errors[nameof(cellPhone)] = "Номер телефона не соотвецтвует формату +79876543210.";
+                return View("Index", orderModel);
+            }
+            int code = 1111;
+            HttpContext.Session.SetInt32(cellPhone, code);
+            _notificationService.SendConfirmationCode(cellPhone, code);
+
+            return View("Confirmation", new ConfirmationModel 
+            {OrderId = order.OrderId, CellPhone = cellPhone });
+        }
+        [HttpPost]
+        public IActionResult StartDelivery(int orderiId, string cellPhone, int code)
+        {
+            int? storedCode = HttpContext.Session.GetInt32(cellPhone);
+            if (storedCode == null)
+            {
+                return View("Confirmation",
+                            new ConfirmationModel
+                            {
+                                OrderId = orderiId,
+                                CellPhone = cellPhone,
+                                Errors = new Dictionary<string, string>
+                                {
+                                    { "code", "Пустой код, повторите отправку" }
+                                },
+                            }); ;
+            }
+
+            if (storedCode != code)
+            {
+                return View("Confirmation",
+                            new ConfirmationModel
+                            {
+                                OrderId = orderiId,
+                                CellPhone = cellPhone,
+                                Errors = new Dictionary<string, string>
+                                {
+                                    { "code", "Отличается от отправленного" }
+                                },
+                            }); ;
+            }
+
+            return View();
+        }
+
         private OrderModel Map(Order order)
         {
             var bookIds = order.Items.Select(book => book.BookId);
@@ -103,6 +161,16 @@ namespace Store.Web.Controllers
             cart.TotalPrice = order.TotalPrice;
 
             HttpContext.Session.Set(cart);
+        }
+        private bool IsValidCellPhone(string cellPhone)
+        {
+            if (cellPhone == null)
+                return false;
+
+            cellPhone = cellPhone.Replace(" ", "")
+                                 .Replace("-", "");
+
+            return Regex.IsMatch(cellPhone, @"^\+?\d{11}$");
         }
 
     }

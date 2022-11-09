@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Список товаров в корзине";
 }
+
+<h1>Корзина</h1>
+
 <table>
     <thead>
         <tr>
@@ -28,7 +31,7 @@
                 </td>
                 <td>@item.Price</td>
                 <td>
-                    <form asp-action="RemoveOrderItem" asp-controller="Order" asp-route-bookId="@item.BookId"> 
+                    <form method="post" asp-action="RemoveOrderItem" asp-controller="Order" asp-route-bookId="@item.BookId"> 
                         <button type="submit">Удалить</button>
                     </form>
                 </td>
@@ -43,3 +46,16 @@
         </tr>
     </tfoot>
 </table>
+
+<form action="@Url.Action("SendConfirmationCode")" method="post">
+    <input type="hidden" name="orderId" value="@Model.OrderId" />
+    <div>
+        <label for="cellPhone">Мобильный телефон</label>
+        <input type="text" name="cellPhone" value="+79876543210" />
+        @if (Model.Errors.ContainsKey("cellPhone"))
+        {
+            <small>@Model.Errors["cellPhone"]</small>
+        }
+    </div>
+    <button type="submit">Отправить код</button>
+</form>
