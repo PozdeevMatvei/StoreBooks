@@ -8,6 +8,8 @@
 <ul>
     @foreach(var book in Model)
     {
-        <li><a href="@Url.Action("Index", "Book", new {bookId = book.BookId})">@book.Title</a></li>       
+        <li>
+            <a asp-action="@nameof(BookController.Index)" asp-controller="Book" asp-route-bookId="@book.BookId">@book.Title</a>
+        </li>
     }
 </ul>

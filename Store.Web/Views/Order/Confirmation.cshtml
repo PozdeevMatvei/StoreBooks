@@ -6,7 +6,7 @@
 
 <h1>Подтверждение мобильного телефона.</h1>
 
-<form asp-action="StartDelivery" method="post">
+<form asp-action="@nameof(OrderController.Confirmate)" method="post">
     <input type="hidden" name="orderId" value="@Model.OrderId" />
     <input type="hidden" name="cellPhone" value="@Model.CellPhone" />
     <div>
@@ -16,10 +16,11 @@
         {
             <small>@Model.Errors["code"]</small>
         }
+        <button type="submit">Проверить</button>
     </div>
 </form>
 
-<form asp-action="SendConfirmationCode" method="post">
+<form asp-action="@nameof(OrderController.SendConfirmationCode)" method="post">
     <input type="hidden" name="orderId" value="@Model.OrderId"/>
     <div>
         <label for="cellPhone">Мобильный телефон</label>

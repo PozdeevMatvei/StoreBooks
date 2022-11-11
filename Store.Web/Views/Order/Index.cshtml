@@ -25,13 +25,13 @@
                 <td>@item.Title</td>
                 <td>@item.Author</td>
                 <td>
-                    <a type="button" asp-action="UpdateOrderItem" asp-controller="Order" asp-route-bookId="@item.BookId" asp-route-count="-1">-</a>
+                    <a type="button" href="@Url.Action(nameof(OrderController.UpdateOrderItem), new{ BookId = @item.BookId, Count = -1})">-</a>
                     @item.Count
-                    <a type="button" asp-action="UpdateOrderItem" asp-controller="Order" asp-route-bookId="@item.BookId">+</a>
+                    <a type="button" href="@Url.Action(nameof(OrderController.UpdateOrderItem), new{ BookId = @item.BookId})">+</a>
                 </td>
                 <td>@item.Price</td>
                 <td>
-                    <form method="post" asp-action="RemoveOrderItem" asp-controller="Order" asp-route-bookId="@item.BookId"> 
+                    <form method="post" href="@Url.Action(nameof(OrderController.RemoveOrderItem), new{ BookId = @item.BookId})">
                         <button type="submit">Удалить</button>
                     </form>
                 </td>
@@ -47,7 +47,7 @@
     </tfoot>
 </table>
 
-<form action="@Url.Action("SendConfirmationCode")" method="post">
+<form action="@Url.Action(nameof(OrderController.SendConfirmationCode))" method="post">
     <input type="hidden" name="orderId" value="@Model.OrderId" />
     <div>
         <label for="cellPhone">Мобильный телефон</label>

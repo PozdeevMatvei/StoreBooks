@@ -2,6 +2,8 @@
 using Store.Web.Models;
 using Store.Messages;
 using System.Text.RegularExpressions;
+using Store.Contractors;
+using Store.Memory;
 
 namespace Store.Web.Controllers
 {
@@ -9,13 +11,15 @@ namespace Store.Web.Controllers
     {
         private readonly IBookRepository _bookRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly IEnumerable<IDeliveryService> _deliveryServices;
         private readonly INotificationService _notificationService;
 
         public OrderController(IBookRepository bookRepository, IOrderRepository orderRepository,
-            INotificationService notificationService)
+            IEnumerable<IDeliveryService> deliveryServices, INotificationService notificationService)
         {
             _bookRepository = bookRepository;
             _orderRepository = orderRepository;
+            _deliveryServices = deliveryServices;
             _notificationService = notificationService;
         }
 
@@ -81,7 +85,7 @@ namespace Store.Web.Controllers
             {OrderId = order.OrderId, CellPhone = cellPhone });
         }
         [HttpPost]
-        public IActionResult StartDelivery(int orderiId, string cellPhone, int code)
+        public IActionResult Confirmate(int orderId, string cellPhone, int code)
         {
             int? storedCode = HttpContext.Session.GetInt32(cellPhone);
             if (storedCode == null)
@@ -89,7 +93,7 @@ namespace Store.Web.Controllers
                 return View("Confirmation",
                             new ConfirmationModel
                             {
-                                OrderId = orderiId,
+                                OrderId = orderId,
                                 CellPhone = cellPhone,
                                 Errors = new Dictionary<string, string>
                                 {
@@ -103,7 +107,7 @@ namespace Store.Web.Controllers
                 return View("Confirmation",
                             new ConfirmationModel
                             {
-                                OrderId = orderiId,
+                                OrderId = orderId,
                                 CellPhone = cellPhone,
                                 Errors = new Dictionary<string, string>
                                 {
@@ -112,7 +116,41 @@ namespace Store.Web.Controllers
                             }); ;
             }
 
-            return View();
+            HttpContext.Session.Remove(cellPhone);
+
+            var deliveryModel = new DeliveryModel
+            {
+                OrderId = orderId,
+                Methods = _deliveryServices.ToDictionary(service => service.UniqueCode,
+                                                         service => service.Title)
+            };
+
+            return View("DeliveryMethod", deliveryModel);
+        }
+        [HttpPost]
+        public IActionResult StartDelivery(int orderId, string uniqueCode)
+        {
+            var deliveryService = _deliveryServices.Single(service => service.UniqueCode == uniqueCode);
+            var order = _orderRepository.GetById(orderId);
+
+            var form = deliveryService.CreateForm(order);
+
+            return View("DeliveryStep", form);
+        }
+
+        [HttpPost]
+        public IActionResult NextDelivery(int orderId, string uniqueCode, int step, Dictionary<string, string> values)
+        {
+            var deliveryService = _deliveryServices.Single(service => service.UniqueCode == uniqueCode);
+
+            var form = deliveryService.MoveNext(orderId, step, values); 
+
+            if (form.IsFinal)
+            {
+                return null;
+            }
+
+            return View("DeliveryStep", form);
         }
 
         private OrderModel Map(Order order)
