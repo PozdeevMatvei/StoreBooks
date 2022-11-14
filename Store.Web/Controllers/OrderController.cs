@@ -12,14 +12,19 @@ namespace Store.Web.Controllers
         private readonly IBookRepository _bookRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IEnumerable<IDeliveryService> _deliveryServices;
+        private readonly IEnumerable<IPaymentService> _paymentServices;
         private readonly INotificationService _notificationService;
 
-        public OrderController(IBookRepository bookRepository, IOrderRepository orderRepository,
-            IEnumerable<IDeliveryService> deliveryServices, INotificationService notificationService)
+        public OrderController(IBookRepository bookRepository, 
+                               IOrderRepository orderRepository,
+                               IEnumerable<IDeliveryService> deliveryServices, 
+                               IEnumerable<IPaymentService> paymentServices, 
+                               INotificationService notificationService)
         {
             _bookRepository = bookRepository;
             _orderRepository = orderRepository;
             _deliveryServices = deliveryServices;
+            _paymentServices = paymentServices;
             _notificationService = notificationService;
         }
 
@@ -79,6 +84,8 @@ namespace Store.Web.Controllers
             }
             int code = 1111;
             HttpContext.Session.SetInt32(cellPhone, code);
+
+            //заглушка реализации
             _notificationService.SendConfirmationCode(cellPhone, code);
 
             return View("Confirmation", new ConfirmationModel 
@@ -116,6 +123,10 @@ namespace Store.Web.Controllers
                             }); ;
             }
 
+            var order = _orderRepository.GetById(orderId);
+            order.CellPhone = cellPhone;
+            _orderRepository.Update(order);
+
             HttpContext.Session.Remove(cellPhone);
 
             var deliveryModel = new DeliveryModel
@@ -143,21 +154,62 @@ namespace Store.Web.Controllers
         {
             var deliveryService = _deliveryServices.Single(service => service.UniqueCode == uniqueCode);
 
-            var form = deliveryService.MoveNext(orderId, step, values); 
+            var form = deliveryService.MoveNextForm(orderId, step, values); 
 
             if (form.IsFinal)
             {
-                return null;
+                var order = _orderRepository.GetById(orderId);
+                order.Delivery = deliveryService.GetOrderDelivery(form);
+                _orderRepository.Update(order);
+
+                var testcodes = _paymentServices.Select(service => service.UniqueCode);
+                var testTitles = _paymentServices.Select(service => service.Title);
+                var deliveryModel = new DeliveryModel
+                {
+                    OrderId = orderId,
+                    Methods = _paymentServices.ToDictionary(service => service.UniqueCode,
+                                                            service => service.Title)
+                };
+
+                return View("PaymentMethod", deliveryModel);
             }
 
             return View("DeliveryStep", form);
         }
+        public IActionResult StartPayment(int orderId, string uniqueCode)
+        {
+            var paymentService = _paymentServices.Single(service => service.UniqueCode == uniqueCode);
+            var order = _orderRepository.GetById(orderId);
 
+            var form = paymentService.CreateForm(order);
+
+            return View("PaymentStep", form);
+        }
+
+        [HttpPost]
+        public IActionResult NextPayment(int orderId, string uniqueCode, int step, Dictionary<string, string> values)
+        {
+            var paymentService = _paymentServices.Single(service => service.UniqueCode == uniqueCode);
+
+            var form = paymentService.MoveNextForm(orderId, step, values);
+
+            if (form.IsFinal)
+            {
+                var order = _orderRepository.GetById(orderId);
+                order.Payment = paymentService.GetOrderPayment(form);
+                _orderRepository.Update(order);
+               
+                return View("finish");
+            }
+
+            return View("PaymentStep", form);
+        }
+        //todo: добавить свойство доставка в заказ для отображения цены доставки покупателю
         private OrderModel Map(Order order)
         {
             var bookIds = order.Items.Select(book => book.BookId);
             var books = _bookRepository.GetAllByIds(bookIds);
-            var itemModels = from orderItem in order.Items
+            var orderItemsModel = from orderItem in order.Items
                              join book in books
                              on orderItem.BookId equals book.BookId
                              select new OrderItemModel
@@ -172,9 +224,10 @@ namespace Store.Web.Controllers
             return new OrderModel
             {
                 OrderId = order.OrderId,
-                OrderItems = itemModels.ToArray(),
+                OrderItems = orderItemsModel.ToArray(),
                 TotalCount = order.TotalCount,
-                TotalPrice = order.TotalPrice
+                TotalPrice = order.TotalPrice,
+                DeliveryPrice = order.Delivery?.DeliveryPrice                
             };
         }
         private (Cart cart, Order order) CreateOrGetCartAndOrder()

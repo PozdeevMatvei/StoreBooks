@@ -51,7 +51,7 @@ namespace Store.Contractors
             });
         }
 
-        public Form MoveNext(int orderId, int step, IReadOnlyDictionary<string, string> values)
+        public Form MoveNextForm(int orderId, int step, IReadOnlyDictionary<string, string> values)
         {
             if (step == 1)
             {
@@ -84,6 +84,36 @@ namespace Store.Contractors
             }
             else
                 throw new InvalidOperationException("Invalid postamate step.");
+        }
+
+        public OrderDelivery GetOrderDelivery(Form form)
+        {
+            if(form == null)
+                throw new ArgumentNullException(nameof(form));
+            if (form.UniqueCode != UniqueCode || !form.IsFinal)
+                throw new InvalidOperationException("invalid form.");
+
+            var cityId = form.Fields
+                             .Single(field => field.Name == "city")
+                             .Value;
+            string cityName = _cities[cityId];
+
+            var postomateId = form.Fields
+                                  .Single(field => field.Name == "postamate")
+                                  .Value;
+            string postomateName = _postamates[cityId][postomateId];
+
+            string description = $"Город: {cityName}, Постамат: {postomateName}";
+
+            var parameters = new Dictionary<string, string>
+            {
+                {nameof(cityId), cityId },
+                {nameof(cityName), cityName },
+                {nameof(postomateId), postomateId },
+                {nameof(postomateName), postomateName }
+            };
+
+            return new OrderDelivery(UniqueCode, description, 150m, parameters);
         }
     }
 }

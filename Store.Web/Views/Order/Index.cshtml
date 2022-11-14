@@ -39,6 +39,12 @@
         }
     </tbody>
     <tfoot>
+        @if(Model.DeliveryPrice != null)
+        {
+            <tr>
+                <td colspan="4">Цена доставки: @Model.DeliveryPrice</td>
+            </tr>
+        }
         <tr>
             <td colspan="3">Итого</td>
             <td>@Model.TotalCount</td>
