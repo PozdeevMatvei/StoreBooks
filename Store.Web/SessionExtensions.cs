@@ -14,7 +14,6 @@ namespace Store.Web
 
             session.SetString(KEY, JsonSerializer.Serialize<Cart>(value));
         }
-
         public static bool TryGetCart(this ISession session, out Cart? cart)
         {
             var value = session.GetString(KEY);
@@ -30,15 +29,10 @@ namespace Store.Web
                 return false;
             }
         }
-
-        //public static void GetCart(this ISession session, out Cart cart)
-        //{           
-        //    var value = session.GetString(KEY);
-
-        //    if (value != null)
-        //        cart = JsonSerializer.Deserialize<Cart>(value) ?? new Cart();
-        //    else
-        //        cart = new Cart();            
-        //}
+        public static void RemoveCart(this ISession session)
+        {
+            session.Remove(KEY);
+        }
+       
     }   
 }

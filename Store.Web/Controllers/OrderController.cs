@@ -4,6 +4,7 @@ using Store.Messages;
 using System.Text.RegularExpressions;
 using Store.Contractors;
 using Store.Memory;
+using Store.Web.Contractors;
 
 namespace Store.Web.Controllers
 {
@@ -13,18 +14,21 @@ namespace Store.Web.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly IEnumerable<IDeliveryService> _deliveryServices;
         private readonly IEnumerable<IPaymentService> _paymentServices;
+        private readonly IEnumerable<IWebContractorService> _webContractorServices;
         private readonly INotificationService _notificationService;
 
         public OrderController(IBookRepository bookRepository, 
                                IOrderRepository orderRepository,
                                IEnumerable<IDeliveryService> deliveryServices, 
                                IEnumerable<IPaymentService> paymentServices, 
+                               IEnumerable<IWebContractorService> webContractorServices,
                                INotificationService notificationService)
         {
             _bookRepository = bookRepository;
             _orderRepository = orderRepository;
             _deliveryServices = deliveryServices;
             _paymentServices = paymentServices;
+            _webContractorServices = webContractorServices;
             _notificationService = notificationService;
         }
 
@@ -51,6 +55,7 @@ namespace Store.Web.Controllers
 
             return RedirectToAction("Index", "Book", new { BookId = bookId });
         }
+
         [HttpPost]
         public IActionResult RemoveOrderItem(int bookId)
         {
@@ -183,6 +188,11 @@ namespace Store.Web.Controllers
 
             var form = paymentService.CreateForm(order);
 
+            var webContractorservice = _webContractorServices
+                                       .SingleOrDefault(service => service.UniqueCode == uniqueCode);
+            if (webContractorservice != null)
+                return Redirect(webContractorservice.GetUri);
+
             return View("PaymentStep", form);
         }
 
@@ -199,12 +209,17 @@ namespace Store.Web.Controllers
                 order.Payment = paymentService.GetOrderPayment(form);
                 _orderRepository.Update(order);
                
-                return View("finish");
+                return RedirectToAction(nameof(OrderController.Finish));
             }
 
             return View("PaymentStep", form);
         }
-        //todo: добавить свойство доставка в заказ для отображения цены доставки покупателю
+        public IActionResult Finish()
+        {
+            HttpContext.Session.RemoveCart();
+            return View();
+        }
+
         private OrderModel Map(Order order)
         {
             var bookIds = order.Items.Select(book => book.BookId);

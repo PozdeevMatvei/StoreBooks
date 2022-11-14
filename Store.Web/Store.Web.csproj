@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\plugins\Store.Web.Contractors\Store.Web.Contractors.csproj" />
+    <ProjectReference Include="..\plugins\Store.YandexKassa\Store.YandexKassa.csproj" />
     <ProjectReference Include="..\Store.Memory\Store.Memory.csproj" />
     <ProjectReference Include="..\StoreLib\Store.csproj" />
   </ItemGroup>
