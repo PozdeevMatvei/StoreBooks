@@ -44,12 +44,15 @@ namespace Store.Web.Controllers
             return View("Empty");
         }
         [HttpPost]
-        public IActionResult AddItemInOrder(int bookId)
+        public IActionResult AddItemInOrder(int bookId, int count = 1)
         {
-            var (cart, order) = CreateOrGetCartAndOrder();
+            (Cart cart, Order order) = CreateOrGetCartAndOrder();
 
             var book = _bookRepository.GetById(bookId);
-            order.AddOrUpdateOrderItem(book, 1);
+            if (order.Items.TryGet(bookId, out OrderItem? orderItem))
+                orderItem!.Count += count;
+            else
+                order.Items.Add(bookId, book.Price, count);
 
             SaveOrderAndCart(order, cart);
 
@@ -61,7 +64,7 @@ namespace Store.Web.Controllers
         {
             (Cart cart, Order order) = CreateOrGetCartAndOrder();
 
-            order.RemoveOrderItem(bookId);
+            order.Items.Remove(bookId);
             SaveOrderAndCart(order, cart);
 
             return RedirectToAction("Index");
@@ -71,7 +74,7 @@ namespace Store.Web.Controllers
             (Cart cart, Order order) = CreateOrGetCartAndOrder();
             var book = _bookRepository.GetById(bookId);
 
-            order.AddOrUpdateOrderItem(book, count);
+            order.Items.Get(bookId).Count += count; // todo:
             SaveOrderAndCart(order, cart);
 
             return RedirectToAction("Index");

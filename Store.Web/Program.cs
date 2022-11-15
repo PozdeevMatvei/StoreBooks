@@ -32,9 +32,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapAreaControllerRoute(
-    name: "yandex.kassa",
-    areaName: "YandexKassa",
-    pattern: "YandexKassa/{controller=Home}/{action=Index}/{id?}");
-
 app.Run();
