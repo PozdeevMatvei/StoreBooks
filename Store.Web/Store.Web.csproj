@@ -10,7 +10,12 @@
     <ProjectReference Include="..\plugins\Store.Web.Contractors\Store.Web.Contractors.csproj" />
     <ProjectReference Include="..\plugins\Store.YandexKassa\Store.YandexKassa.csproj" />
     <ProjectReference Include="..\Store.Memory\Store.Memory.csproj" />
+    <ProjectReference Include="..\Store.Web.App\Store.Web.App.csproj" />
     <ProjectReference Include="..\StoreLib\Store.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

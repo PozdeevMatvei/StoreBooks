@@ -1,10 +1,14 @@
-﻿
-@{
-    Layout = "_Layout";
-}
+﻿@model OrderModel
 
 <p>
     Ваш заказ успешно оформлен. Ожидайте смс от службы доставки.
+</p>
+<p>
+    <p>Детали заказа</p>
+    <div>
+        <p>@Model.DeliveryDescription</p>
+        <p>@Model.PaymentDescription</p>
+    </div>
 </p>
 <p>
     <a href="@Url.Action(nameof(HomeController.Index), "Home")">Вернуться в магазин.</a>

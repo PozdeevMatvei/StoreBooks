@@ -1,8 +1,12 @@
-﻿@{
+﻿@model ExampleModel
+@{
     ViewData["Title"] = "Яндекс.Касса";
 }
 
 <h1>Яндекс.Касса</h1>
-<p>
-    <a asp-area="YandexKassa" asp-controller="Home" asp-action="CallBack">Оплатить</a>
-</p>
+
+<form asp-area="YandexKassa" asp-controller="Home" asp-action="Callback" method="post">
+    <input type="hidden" name="orderId" value="@Model.OrderId"/>
+    <input type="hidden" name="returnUri" value="@Model.ReturnUri"/>
+    <button type="submit">Оплатить</button>
+</form>

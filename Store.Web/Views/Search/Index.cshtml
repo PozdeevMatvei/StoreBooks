@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Book>
+﻿@model IReadOnlyCollection<BookModel>
 
 @{
     ViewData["Title"] = "List books";
@@ -6,10 +6,10 @@
 
 
 <ul>
-    @foreach(var book in Model)
+    @foreach(var bookModel in Model)
     {
         <li>
-            <a asp-action="@nameof(BookController.Index)" asp-controller="Book" asp-route-bookId="@book.BookId">@book.Title</a>
+            <a asp-action="@nameof(BookController.Index)" asp-controller="Book" asp-route-bookId="@bookModel.BookId">@bookModel.Title</a>
         </li>
     }
 </ul>

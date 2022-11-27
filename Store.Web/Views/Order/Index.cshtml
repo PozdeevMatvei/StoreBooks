@@ -24,14 +24,20 @@
                 <td>@item.BookId</td>
                 <td>@item.Title</td>
                 <td>@item.Author</td>
-                <td>
-                    <a type="button" href="@Url.Action(nameof(OrderController.UpdateOrderItem), new{ BookId = @item.BookId, Count = -1})">-</a>
-                    @item.Count
-                    <a type="button" href="@Url.Action(nameof(OrderController.UpdateOrderItem), new{ BookId = @item.BookId})">+</a>
+                <td>                                       
+                    <form action="@Url.Action(nameof(OrderController.UpdateOrderItem))" method="post">
+                        <input type="hidden" name="bookId" value="@item.BookId" />
+
+                        <a type="button" href="@Url.Action(nameof(OrderController.PutAwayBook), new{ BookId = @item.BookId})">-</a>
+                        <input type="number" name="count" value="@item.Count" max="100" min="1"/>
+                        <a type="button" href="@Url.Action(nameof(OrderController.AddBook), new{ BookId = @item.BookId})">+</a>
+                    </form>
+                    
                 </td>
                 <td>@item.Price</td>
                 <td>
-                    <form method="post" href="@Url.Action(nameof(OrderController.RemoveOrderItem), new{ BookId = @item.BookId})">
+                    <form action="@Url.Action(nameof(OrderController.RemoveOrderItem))" method="post">
+                        <input type="hidden" name="BookId" value="@item.BookId" />
                         <button type="submit">Удалить</button>
                     </form>
                 </td>
@@ -54,7 +60,6 @@
 </table>
 
 <form action="@Url.Action(nameof(OrderController.SendConfirmationCode))" method="post">
-    <input type="hidden" name="orderId" value="@Model.OrderId" />
     <div>
         <label for="cellPhone">Мобильный телефон</label>
         <input type="text" name="cellPhone" value="+79876543210" />

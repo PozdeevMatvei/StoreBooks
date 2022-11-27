@@ -36,71 +36,59 @@ namespace Store.Contractors
             }
         };
 
-        public string UniqueCode => "Postamate";
 
-        public string Title => "Доставка через постаматы в Москве и Санкт-Перербурге";
+        public string Name => "Postamate";
 
-        public Form CreateForm(Order order)
+        public string Title => "Доставка через постаматы в Москве и Санкт-Петербурге";
+
+        public Form FirstForm(Order order)
         {
             if (order == null)
                 throw new ArgumentNullException(nameof(order));
 
-            return new Form(UniqueCode, order.OrderId, 1, false, new SelectionField[]
-            {
-                new SelectionField("Город", "city", "1", _cities),
-            });
+            return Form.CreateFirst(Name)
+                       .AddParameter("orderId", order.OrderId.ToString())
+                       .AddField(new SelectionField("Город", "city", "1", _cities));
         }
 
-        public Form MoveNextForm(int orderId, int step, IReadOnlyDictionary<string, string> values)
+        public Form NextForm(int step, IReadOnlyDictionary<string, string> parameters)
         {
             if (step == 1)
             {
-                if (values["city"] == "1")
+                if (parameters["city"] == "1")
                 {
-                    return new Form(UniqueCode, orderId, 2, false, new Field[]
-                    {
-                        new HiddenField("Город", "city", "1"),
-                        new SelectionField("Постамат", "postamate", "1", _postamates["1"]),
-                    });
+                    return Form.CreateNext(Name, step + 1, parameters)
+                               .AddField(new SelectionField("Постамат", "postamate", "1",
+                                                            _postamates["1"]));
                 }
-                else if (values["city"] == "2")
+                else if (parameters["city"] == "2")
                 {
-                    return new Form(UniqueCode, orderId, 2, false, new Field[]
-                    {
-                        new HiddenField("Город", "city", "2"),
-                        new SelectionField("Постамат", "postamate", "4", _postamates["2"]),
-                    });
+                    return Form.CreateNext(Name, step + 1, parameters)
+                               .AddField(new SelectionField("Постамат", "postamate", "4",
+                                                            _postamates["2"]));
                 }
                 else
                     throw new InvalidOperationException("Invalid postamate city.");
             }
             else if (step == 2)
             {
-                return new Form(UniqueCode, orderId, 3, true, new Field[]
-                {
-                    new HiddenField("Город", "city", values["city"]),
-                    new HiddenField("Постамат", "postamate", values["postamate"]),
-                });
+                return Form.CreateLast(Name, step + 1, parameters);
             }
             else
                 throw new InvalidOperationException("Invalid postamate step.");
         }
 
-        public OrderDelivery GetOrderDelivery(Form form)
+        public OrderDelivery GetDelivery(Form form)
         {
             if(form == null)
                 throw new ArgumentNullException(nameof(form));
-            if (form.UniqueCode != UniqueCode || !form.IsFinal)
+
+            if(form.ServiceName != Name || !form.IsFinal)
                 throw new InvalidOperationException("invalid form.");
 
-            var cityId = form.Fields
-                             .Single(field => field.Name == "city")
-                             .Value;
+            var cityId = form.Parameters["city"];
             string cityName = _cities[cityId];
-
-            var postomateId = form.Fields
-                                  .Single(field => field.Name == "postamate")
-                                  .Value;
+            var postomateId = form.Parameters["postamate"];
             string postomateName = _postamates[cityId][postomateId];
 
             string description = $"Город: {cityName}, Постамат: {postomateName}";
@@ -113,7 +101,7 @@ namespace Store.Contractors
                 {nameof(postomateName), postomateName }
             };
 
-            return new OrderDelivery(UniqueCode, description, 150m, parameters);
+            return new OrderDelivery(Name, description, 150m, parameters);
         }
     }
 }

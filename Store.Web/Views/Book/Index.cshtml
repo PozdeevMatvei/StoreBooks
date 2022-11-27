@@ -1,4 +1,4 @@
-﻿@model Book
+﻿@model BookModel
 
 @{
     ViewData["Title"] = Model.Title;
@@ -8,7 +8,14 @@
 <p><strong>@Model.Author</strong></p>
 <p>@Model.Description</p>
 <p>Цена: <strong>@Model.Price</strong></p>
-<form method="post" action="@Url.Action("AddItemInOrder", "Order")" method="post">
+<form method="post" action="@Url.Action(nameof(OrderController.AddOrderItem), "Order")" method="post">
     <input type="hidden" name="bookId" value="@Model.BookId"/>
-    <button type="submit">В корзину</button>
+    @if(Model.IsBookCart)
+    {
+        <button disabled>Товар в корзине</button>
+    }
+    else
+    {
+        <button type="submit">В корзину</button>
+    }
 </form>

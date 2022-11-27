@@ -8,15 +8,25 @@ namespace Store
 {
     public class OrderPayment
     {
-        public string UniqueCode { get; }
+        public string Name { get; }
         public string Description { get; }
+        public string IsCompletePaymentOrder { get; }
         public IReadOnlyDictionary<string, string> Parameters { get; }
 
-        public OrderPayment(string uniqueCode, string description, IReadOnlyDictionary<string, string> parameters)
+        public OrderPayment(string name, string description, IReadOnlyDictionary<string, string> parameters)
         {
-            UniqueCode = uniqueCode;
+            Name = name;
             Description = description;
             Parameters = parameters;
+            IsCompletePaymentOrder = SetIsCompletePaymentOrder(parameters);
+        }
+
+        private static string SetIsCompletePaymentOrder(IReadOnlyDictionary<string, string> parameters)
+        {
+            if (parameters.ContainsKey("IsCompletePaymentOrder"))
+                return parameters["IsCompletePaymentOrder"] == PaymentCompletionOptions.orderPaid.ToString() ? "Заказ оплачен." : "Заказ не оплачен.";
+          
+            return "Заказ не оплачен.";
         }
     }
 }

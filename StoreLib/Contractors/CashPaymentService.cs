@@ -8,32 +8,31 @@ namespace Store.Contractors
 {
     public class CashPaymentService : IPaymentService
     {
-        public string UniqueCode => "Cash";
+        public string Name => "Cash";
 
         public string Title => "Оплата наличными";
 
-        public Form CreateForm(Order order)
+        public Form FirstForm(Order order)
         {
-            return new Form(UniqueCode, order.OrderId, 1, false, Array.Empty<Field>());
+            return Form.CreateFirst(Name)
+                       .AddParameter("orderId", order.OrderId.ToString());
+        }
+        public Form NextForm(int step, IReadOnlyDictionary<string, string> parameters)
+        {
+            if (step != 1)
+                throw new InvalidOperationException("Invalid cash step.");
+
+            return Form.CreateLast(Name, step + 1, parameters);
         }
 
-        public OrderPayment GetOrderPayment(Form form)
+        public OrderPayment GetPayment(Form form)
         {
-            if (form.UniqueCode != UniqueCode || !form.IsFinal)
+            if (form.ServiceName != Name || !form.IsFinal)
                 throw new InvalidOperationException("Invalid payment form");
 
             string description = "Оплата наличными";
-            var emptyParameters = new Dictionary<string, string>();
 
-            return new OrderPayment(UniqueCode, description, emptyParameters);
-        }
-
-        public Form MoveNextForm(int orderId, int step, IReadOnlyDictionary<string, string> values)
-        {
-            if(step != 1)
-                throw new InvalidOperationException("Invalid cash step.");
-
-            return new Form(UniqueCode, orderId, 2, true, Array.Empty<Field>());
+            return new OrderPayment(Name, description, form.Parameters);
         }
     }
 }

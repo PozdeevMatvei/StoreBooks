@@ -1,19 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Store.Web.App;
 
 namespace Store.Web.Controllers
 {
     public class BookController : Controller
     {
-        private readonly IBookRepository _bookRepository;
+        private readonly BookService _bookService;
+        private readonly OrderService _orderService;
 
-        public BookController(IBookRepository bookRepository)
+        public BookController(BookService bookService, OrderService orderService)
         {
-            _bookRepository = bookRepository;
+            _bookService = bookService;
+            _orderService = orderService;
         }
 
         public IActionResult Index(int bookId)
         {
-            Book book = _bookRepository.GetById(bookId);
+            BookModel book = _bookService.GetById(bookId);
+            book.IsBookCart = _orderService.IsBookInCart(bookId);
 
             return View(book);
         }

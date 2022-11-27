@@ -8,12 +8,12 @@ namespace Store.Contractors
 {
     public interface IDeliveryService
     {
-        string UniqueCode { get; }
+        string Name { get; }
         string Title { get; }
-        Form CreateForm(Order order);
+        Form FirstForm(Order order);
 
-        Form MoveNextForm(int orderId, int step, IReadOnlyDictionary<string, string> values);
-        OrderDelivery GetOrderDelivery(Form form);
+        Form NextForm(int step, IReadOnlyDictionary<string, string> values);
+        OrderDelivery GetDelivery(Form form);
 
     }
 }

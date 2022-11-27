@@ -13,7 +13,7 @@ namespace Store
         public string? CellPhone { get; set; }
         public int TotalCount => Items.Sum(item => item.Count);
         public decimal TotalPrice => Items.Sum(item => item.Price * item.Count)
-                                                          + (Delivery?.DeliveryPrice ?? 0m);
+                                                          + (Delivery?.Price ?? 0m);
         public OrderDelivery? Delivery { get; set; }
         public OrderPayment? Payment { get; set; }
 

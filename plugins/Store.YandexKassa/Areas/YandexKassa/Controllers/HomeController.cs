@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Store.YandexKassa.Areas.YandexKassa.Models;
 
 namespace Store.YandexKassa.Areas.YandexKassa.Controllers
 {
@@ -8,15 +9,15 @@ namespace Store.YandexKassa.Areas.YandexKassa.Controllers
         [Route("{area}")]
         [Route("{area}/{controller}")]
         [Route("{area}/{controller}/{action}")]
-        public IActionResult Index()
+        public IActionResult Index(int orderId, string returnUri)
         {
-            return View();
+            return View(new ExampleModel(orderId, returnUri));
         }
 
         [Route("{area}/{controller}/{action}")]
-        public IActionResult Callback()
+        public IActionResult Callback(int orderId, string returnUri)
         {
-            return View();
+            return View(new ExampleModel(orderId, returnUri, PaymentCompletionOptions.orderPaid));
         }
     }
 }

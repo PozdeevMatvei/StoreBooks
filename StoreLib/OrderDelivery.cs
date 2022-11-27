@@ -8,26 +8,26 @@ namespace Store
 {
     public class OrderDelivery
     {
-        public string UniqueCode { get; }
+        public string Name { get; }
         public string Description { get; }
-        public decimal? DeliveryPrice { get; }
+        public decimal? Price { get; }
         public IReadOnlyDictionary<string,string> Parameters { get; }
 
-        public OrderDelivery(string uniqueCode, 
+        public OrderDelivery(string name, 
                              string description,
-                             decimal amount,
+                             decimal price,
                              IReadOnlyDictionary<string, string> parameters)
         {
-            if(string.IsNullOrWhiteSpace(uniqueCode))
-                throw new ArgumentException(nameof(uniqueCode));
+            if(string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException(nameof(name));
             if(string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException(nameof(description));
             if(parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
-            UniqueCode = uniqueCode;
+            Name = name;
             Description = description;
-            DeliveryPrice = amount;
+            Price = price;
             Parameters = parameters;
         }
     }
