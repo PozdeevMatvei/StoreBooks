@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Store.Web.App\Store.Web.App.csproj" />
     <ProjectReference Include="..\..\StoreLib\Store.csproj" />
   </ItemGroup>
 

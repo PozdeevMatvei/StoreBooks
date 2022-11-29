@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Store.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,19 +9,89 @@ namespace Store
 {
     public class Order
     {
-        public int OrderId { get; }
-        public OrderItemCollection Items { get; }
-        public string? CellPhone { get; set; }
+        private readonly OrderDto _dto;
+        public int OrderId => _dto.OrderId;
+        public string? CellPhone
+        {
+            get => _dto.CellPhone;
+            set
+            {
+                if(string.IsNullOrWhiteSpace(value))
+                    throw new ArgumentException(nameof(CellPhone));
+
+                _dto.CellPhone = value;
+            }
+        }
         public int TotalCount => Items.Sum(item => item.Count);
         public decimal TotalPrice => Items.Sum(item => item.Price * item.Count)
                                                           + (Delivery?.Price ?? 0m);
-        public OrderDelivery? Delivery { get; set; }
-        public OrderPayment? Payment { get; set; }
-
-        public Order(int orderId, IEnumerable<OrderItem> items)
+        public OrderItemCollection Items { get; }
+        public OrderDelivery? Delivery
         {
-            OrderId = orderId;
-            Items = new OrderItemCollection(items);
+            get
+            {
+                if(_dto.DeliveryName == null)
+                    return null;
+
+                return new OrderDelivery(_dto.DeliveryName,
+                                         _dto.DeliveryDescription,
+                                         _dto.DeliveryPrice,
+                                         _dto.DeliveryParameters);
+            }
+            set
+            {
+                if(value == null)
+                    throw new ArgumentNullException(nameof(Delivery));
+
+                _dto.DeliveryName = value.Name;
+                _dto.DeliveryDescription = value.Description;
+                _dto.DeliveryPrice = value.Price;
+                _dto.DeliveryParameters = value.Parameters.ToDictionary(param => param.Key,
+                                                                        param => param.Value);
+
+            }
+        }
+        public OrderPayment? Payment
+        {
+            get
+            {
+                if (_dto.PaymentName == null)
+                    return null;
+
+                return new OrderPayment(_dto.PaymentName,
+                                        _dto.PaymentDescription,
+                                        _dto.PaymentParameters);
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(Payment));
+
+                _dto.PaymentName = value.Name;
+                _dto.PaymentDescription = value.Description;
+                _dto.PaymentParameters = value.Parameters.ToDictionary(param => param.Key,
+                                                                       param => param.Value);
+
+            }
+        }
+
+        public Order(OrderDto dto)
+        {
+            if (dto == null)
+                throw new ArgumentNullException(nameof(OrderDto));
+
+            _dto = dto;
+            Items = new OrderItemCollection(dto);
+        }
+
+        public static class Factory
+        {
+            public static OrderDto Create() => new OrderDto();
+        }
+        public static class Mapper
+        {
+            public static OrderDto Map(Order order) => order._dto;
+            public static Order Map(OrderDto orderDto) => new Order(orderDto);
         }
     }
 }

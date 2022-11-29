@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Store.DTO;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,18 @@ namespace Store
 {
     public class OrderItemCollection : IReadOnlyCollection<OrderItem>
     {
+        private readonly OrderDto _orderDto;
         private readonly List<OrderItem> _items;
 
-        public OrderItemCollection(IEnumerable<OrderItem> items)
+        public OrderItemCollection(OrderDto orderDto)
         {
-            if(items == null)
-                throw new ArgumentNullException(nameof(items));
+            if(orderDto == null)
+                throw new ArgumentNullException(nameof(orderDto));
 
-            _items = new List<OrderItem>(items);
+            _orderDto = orderDto;
+            _items = orderDto.Items
+                             .Select(OrderItem.Mapper.Map)
+                             .ToList();
         }
 
         public int Count => _items.Count;
@@ -45,12 +50,36 @@ namespace Store
             if (TryGet(bookId, out OrderItem? orderItem))
                 throw new InvalidOperationException("Book alredy exists.");
 
-            orderItem = new OrderItem(bookId, price, count);
+            var orderItemDto = OrderItem.DtoFactory.Create(_orderDto, bookId, price, count);
+            _orderDto.Items.Add(orderItemDto);
+
+            orderItem = new OrderItem(orderItemDto);
             _items.Add(orderItem);
 
             return orderItem;
         }
-        public void Remove(int bookId) => _items.Remove(Get(bookId));
+        public OrderItem Add(OrderItem orderItem)
+        {
+            if (TryGet(orderItem.BookId, out _))
+                throw new InvalidOperationException("Book alredy exists.");
+
+            var orderItemDto = OrderItem.Mapper.Map(orderItem);
+
+            _orderDto.Items.Add(orderItemDto);
+            
+            _items.Add(orderItem);
+
+            return orderItem;
+        }
+        public void Remove(int bookId)
+        {
+            var index = _items.FindIndex(item => item.BookId == bookId);
+            if (index == -1)
+                throw new InvalidOperationException("Can not remove this book. Her not exists in the order.");
+
+            _orderDto.Items.RemoveAt(index);
+            _items.RemoveAt(index);
+        }
 
         public IEnumerator<OrderItem> GetEnumerator() => _items.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => (_items as IEnumerable).GetEnumerator();

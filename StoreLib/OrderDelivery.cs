@@ -10,7 +10,7 @@ namespace Store
     {
         public string Name { get; }
         public string Description { get; }
-        public decimal? Price { get; }
+        public decimal Price { get; }
         public IReadOnlyDictionary<string,string> Parameters { get; }
 
         public OrderDelivery(string name, 
