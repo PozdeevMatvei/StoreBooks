@@ -9,11 +9,11 @@ namespace Store
     public class OrderPayment
     {
         public string Name { get; }
-        public string Description { get; }
+        public string? Description { get; }
         public string IsCompletePaymentOrder { get; }
-        public IReadOnlyDictionary<string, string> Parameters { get; }
+        public IReadOnlyDictionary<string, string>? Parameters { get; }
 
-        public OrderPayment(string name, string description, IReadOnlyDictionary<string, string> parameters)
+        public OrderPayment(string name, string? description, IReadOnlyDictionary<string, string>? parameters)
         {
             Name = name;
             Description = description;
@@ -21,9 +21,9 @@ namespace Store
             IsCompletePaymentOrder = SetIsCompletePaymentOrder(parameters);
         }
 
-        private static string SetIsCompletePaymentOrder(IReadOnlyDictionary<string, string> parameters)
+        private static string SetIsCompletePaymentOrder(IReadOnlyDictionary<string, string>? parameters)
         {
-            if (parameters.ContainsKey("IsCompletePaymentOrder"))
+            if (parameters != null && parameters.ContainsKey("IsCompletePaymentOrder"))
                 return parameters["IsCompletePaymentOrder"] == PaymentCompletionOptions.orderPaid.ToString() ? "Заказ оплачен." : "Заказ не оплачен.";
           
             return "Заказ не оплачен.";

@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Store.Memory
 {
-    public class OrderRepository : IOrderRepository
+    public class MockOrderRepository : IOrderRepository
     {
-        private readonly List<Order> _orders = new List<Order>();
+        private readonly List<Order> _orders = new();
         public Order Create()
         {
-            var orderId = _orders.Count + 1;
-            var order = new Order(orderId, new OrderItem[0]);
+            var orderDto = Order.Factory.Create();
+            orderDto.OrderId = _orders.Count + 1;
+            var order = new Order(orderDto);
 
             _orders.Add(order);
 

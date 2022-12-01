@@ -5,6 +5,7 @@ using Store.Messages;
 using Store.YandexKassa;
 using Store.Web.Contractors;
 using Store.Web.App;
+using Store.DTO.EF;
 using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +18,10 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-builder.Services.AddSingleton<IBookRepository, BookRepository>();
-builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+
+builder.Services.AddEF(builder.Configuration.GetConnectionString("Store")!);
+builder.Services.AddSingleton<IBookRepository, MockBookRepository>();
+builder.Services.AddSingleton<IOrderRepository, MockOrderRepository>();
 builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
 builder.Services.AddSingleton<IPaymentService, CashPaymentService>();
 builder.Services.AddSingleton<INotificationService, DebugNotificationService>();

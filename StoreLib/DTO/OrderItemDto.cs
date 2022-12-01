@@ -12,6 +12,6 @@ namespace Store.DTO
         public int BookId { get; set; }
         public int Count { get; set; }
         public decimal Price { get; set; }
-        public OrderDto Order { get; set; } 
+        public OrderDto Order { get; set; } = null!;
     }
 }

@@ -18,7 +18,7 @@ namespace Store.YandexKassa
             _httpContextAccessor = httpContextAccessor;
         }
 
-        private HttpRequest Request => _httpContextAccessor.HttpContext.Request;
+        private HttpRequest Request => _httpContextAccessor.HttpContext!.Request;
         public string Name => "YandexKassa";
         public string Title => "Оплата банковской картой";
 
@@ -47,7 +47,7 @@ namespace Store.YandexKassa
 
         public Uri StartSession(IReadOnlyDictionary<string, string> parameters, Uri returnUri)
         {
-            var queryString = QueryString.Create(parameters);
+            var queryString = QueryString.Create(parameters!);
             queryString += QueryString.Create("returnUri", returnUri.ToString());
 
             var builder = new UriBuilder(Request.Scheme, Request.Host.Host)

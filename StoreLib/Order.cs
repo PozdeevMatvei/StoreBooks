@@ -34,9 +34,9 @@ namespace Store
                     return null;
 
                 return new OrderDelivery(_dto.DeliveryName,
-                                         _dto.DeliveryDescription,
+                                         _dto.DeliveryDescription!,
                                          _dto.DeliveryPrice,
-                                         _dto.DeliveryParameters);
+                                         _dto.DeliveryParameters!);
             }
             set
             {
