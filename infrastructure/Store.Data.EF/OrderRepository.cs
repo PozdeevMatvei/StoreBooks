@@ -15,31 +15,31 @@ namespace Store.DTO.EF
             _dbContextFactory = dbContextFactory;
         }
 
-        public Order Create()
+        public async Task<Order> CreateAsync()
         {
             var dbContext = _dbContextFactory.GetOrCreate(typeof(OrderRepository));
-            var orderDto = Order.Factory.Create();
+            var orderDto = Order.DtoFactory.Create();
 
             dbContext.Orders.Add(orderDto);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
 
             return Order.Mapper.Map(orderDto);
         }
 
-        public Order GetById(int orderId)
+        public async Task<Order> GetByIdAsync(int orderId)
         {
             var dbContext = _dbContextFactory.GetOrCreate(typeof(OrderRepository));
-            var orderDto = dbContext.Orders
+            var orderDto = await dbContext.Orders
                                     .Include(order => order.Items)  
-                                    .Single(order => order.OrderId == orderId);
+                                    .SingleAsync(order => order.Id == orderId);
 
             return Order.Mapper.Map(orderDto);
         }
 
-        public void Update(Order order)
+        public async Task UpdateAsync(Order order)
         {
             var dbContext = _dbContextFactory.GetOrCreate(typeof(OrderRepository));
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Store.Tests
     {
         private Order CreateTestOrder()
         {
-            var orderDto = Order.Factory.Create();
+            var orderDto = Order.DtoFactory.Create();
             return new Order(orderDto);
         }
         [Fact]

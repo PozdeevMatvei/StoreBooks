@@ -6,7 +6,7 @@ namespace Store
     public class Book
     {
         private BookDto _dto;
-        public int BookId => _dto.BookId;
+        public int BookId => _dto.Id;
         public string Isbn
         {
             get => _dto.Isbn;

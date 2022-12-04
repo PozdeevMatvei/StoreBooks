@@ -50,6 +50,9 @@ namespace Store
             if (TryGet(bookId, out OrderItem? orderItem))
                 throw new InvalidOperationException("Book alredy exists.");
 
+            if (count < 1)
+                throw new InvalidOperationException("Too few books to add.");
+
             var orderItemDto = OrderItem.DtoFactory.Create(_orderDto, bookId, price, count);
             _orderDto.Items.Add(orderItemDto);
 
@@ -62,6 +65,8 @@ namespace Store
         {
             if (TryGet(orderItem.BookId, out _))
                 throw new InvalidOperationException("Book alredy exists.");
+            if(orderItem.Count < 1 )
+                throw new InvalidOperationException("Too few books to add.");
 
             var orderItemDto = OrderItem.Mapper.Map(orderItem);
 

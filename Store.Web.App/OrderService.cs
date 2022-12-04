@@ -25,106 +25,107 @@ namespace Store.Web.App
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public Order GetOrder()
+        public async Task<Order> GetOrderAsync()
         {
-            if (TryGetOrder(out Order? order))
+            var (isGetOrder, order) = await TryGetOrderAsync();
+
+            if (isGetOrder)
                 return order!;
 
             throw new InvalidOperationException("Empty session");
         }
-        public bool TryGetModel(out OrderModel? orderModel)
+        public async Task<(bool isGetModel, OrderModel? model)> TryGetModelAsync()
         {
-            if(TryGetOrder(out Order? order))
+            var (isGetModel, order) = await TryGetOrderAsync();
+            if(isGetModel)
             {
-                orderModel = Map(order!);
-                return true;
+                return (true, await MapAsync(order!));
             }
-            orderModel = null;
-            return false;
+            return (false, null);
         }
-        public OrderModel AddOrderItem(int bookId, int count)
-        {
-            if (count < 1)
-                throw new InvalidOperationException("Too few books to add.");
+        public async Task<OrderModel> AddOrderItemAsync(int bookId, int count)
+        {         
+            var (isGetOrder, order) = await TryGetOrderAsync();
+            if (!isGetOrder)
+                order = await _orderRepository.CreateAsync();
 
-            if (!TryGetOrder(out Order? order))
-                order = _orderRepository.Create();
-
-            var book = _bookRepository.GetById(bookId);
+            var book = await _bookRepository.GetByIdAsync(bookId);
             order!.Items.Add(book.BookId, book.Price, count);
 
-            _orderRepository.Update(order);
+            await _orderRepository.UpdateAsync(order);
             UpdateSession(order!);
 
-            return Map(order!);
+            return await MapAsync(order!);
         }
-        public OrderModel UpdateOrderItem(int bookId, int count)
+        public async Task<OrderModel> UpdateOrderItemAsync(int bookId, int count)
         {
             if (count < 1)
                 throw new InvalidOperationException("Too few books to update");
 
-            var order = GetOrder();
+            var order = await GetOrderAsync();
             order.Items.Get(bookId).Count = count;
 
-            _orderRepository.Update(order);
+            await _orderRepository.UpdateAsync(order);
             UpdateSession(order);
 
-            return Map(order);
+            return await MapAsync(order);
         }
-        public OrderModel RemoveOrderItem(int bookId)
+        public async Task<OrderModel> RemoveOrderItemAsync(int bookId)
         {
-            var order = GetOrder();
+            var order = await GetOrderAsync();
             order.Items.Remove(bookId);
 
-            _orderRepository.Update(order);
+            await _orderRepository.UpdateAsync(order);
             UpdateSession(order);
 
-            return Map(order);
+            return await MapAsync(order);
         }
-        public OrderModel AddBook(int bookId)
+        public async Task<OrderModel> AddBookAsync(int bookId)
         {
-            var order = GetOrder();
+            var order = await GetOrderAsync();
             var item = order.Items.Get(bookId);
 
             if(item.Count < 100)
                 item.Count += 1;
 
-            _orderRepository.Update(order);
+            await _orderRepository.UpdateAsync(order);
             UpdateSession(order);
 
-            return Map(order);
+            return await MapAsync(order);
         }
-        public OrderModel PutAwayBook(int bookId)
+        public async Task<OrderModel> PutAwayBookAsync(int bookId)
         {
-            var order = GetOrder();
+            var order = await GetOrderAsync();
             var item = order.Items.Get(bookId);
 
             if(item.Count > 1)
                 item.Count -= 1;
 
-            _orderRepository.Update(order);
+            await _orderRepository.UpdateAsync(order);
             UpdateSession(order);
 
-            return Map(order);
+            return await MapAsync(order);
         }
-        public bool IsBookInCart(int bookId) 
-        { 
-            if(TryGetOrder(out Order? order))
+        public async Task<bool> IsBookInCartAsync(int bookId) 
+        {
+            var (isGetOrder, order) = await TryGetOrderAsync();
+
+            if(isGetOrder)
                 return order!.Items.TryGet(bookId, out OrderItem? orderItem);
 
             return false;
         }
-        public OrderModel SendConfirmation(string cellPhone)
+        public async Task<OrderModel> SendConfirmationAsync(string cellPhone)
         {
-            var order = GetOrder();
-            var orderModel = Map(order);
+            var order = await GetOrderAsync();
+            var orderModel = await MapAsync(order);
 
             if (TryFormatPhone(cellPhone, out string? formattedPhone))
             {
-                var confirmationCode = 1111;
+                var confirmationCode = 1234;
                 orderModel.CellPhone = formattedPhone;
                 Session.SetInt32(formattedPhone, confirmationCode);
-                _notificationService.SendConfirmationCode(cellPhone, confirmationCode);
+                await _notificationService.SendConfirmationCodeAsync(cellPhone, confirmationCode);
             }
             else
                 orderModel.Errors[cellPhone] = "Номер телефона не соответствует формату +79992457505";
@@ -132,7 +133,7 @@ namespace Store.Web.App
             return orderModel;
 
         }
-        public OrderModel ConfirmCellPhone(string cellPhone, int confirmationCode)
+        public async Task<OrderModel> ConfirmCellPhoneAsync(string cellPhone, int confirmationCode)
         {
             const string ErrorsKeyCode = "code";
 
@@ -151,47 +152,48 @@ namespace Store.Web.App
                 return model;
             }
 
-            var order = GetOrder();
+            var order = await GetOrderAsync();
             order.CellPhone = cellPhone;
-            _orderRepository.Update(order);
+            await _orderRepository.UpdateAsync(order);
 
             Session.Remove(cellPhone);
 
-            return Map(order);
+            return await MapAsync(order);
         }
-        public OrderModel SetDelivery(OrderDelivery delivery)
+        public async Task<OrderModel> SetDeliveryAsync(OrderDelivery delivery)
         {
-            var order = GetOrder();
+            var order = await GetOrderAsync();
             order.Delivery = delivery;
-            _orderRepository.Update(order);
+            await _orderRepository.UpdateAsync(order);
 
-            return Map(order);
+            return await MapAsync(order);
         }
-        public OrderModel SetPayment(OrderPayment payment)
+        public async Task<OrderModel> SetPaymentAsync(OrderPayment payment)
         {
-            var order = GetOrder();
+            var order = await GetOrderAsync();
             order.Payment = payment;
-            _orderRepository.Update(order);
 
+            await _orderRepository.UpdateAsync(order);
             Session.RemoveCart();
+            await _notificationService.StartProcessAsync(order);
 
-            return Map(order);
+            return await MapAsync(order);
         }
 
 
-        internal bool TryGetOrder(out Order? order)
+        internal async Task<(bool isGetOrder, Order? order)> TryGetOrderAsync()
         {
             if(Session.TryGetCart(out Cart? cart))
             {
-                order = _orderRepository.GetById(cart!.OrderId);
-                return true;
+                var order = await _orderRepository.GetByIdAsync(cart!.OrderId);
+                return (true, order);
             }
-            order = null;
-            return false;
+
+            return (false, null);
         }
-        internal OrderModel Map(Order order)
+        internal async Task<OrderModel> MapAsync(Order order)
         {
-            var books = GetAllBooks(order);
+            var books = await GetAllBooksAsync(order);
             var orderItemsModel = from item in order.Items
                                   join book in books
                                   on item.BookId equals book.BookId
@@ -215,11 +217,11 @@ namespace Store.Web.App
                 PaymentDescription = $"{order.Payment?.IsCompletePaymentOrder} {order.Payment?.Description}"
             };
         }
-        internal IEnumerable<Book> GetAllBooks(Order order)
+        internal async Task<IEnumerable<Book>> GetAllBooksAsync(Order order)
         {
             var bookIds = order.Items.Select(item => item.BookId);
 
-            return _bookRepository.GetAllByIds(bookIds);
+            return await _bookRepository.GetAllByIdsAsync(bookIds);
         }
         internal void UpdateSession(Order order)
         {

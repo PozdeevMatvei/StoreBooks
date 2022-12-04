@@ -10,7 +10,7 @@ namespace Store
     public class Order
     {
         private readonly OrderDto _dto;
-        public int OrderId => _dto.OrderId;
+        public int OrderId => _dto.Id;
         public string? CellPhone
         {
             get => _dto.CellPhone;
@@ -84,7 +84,7 @@ namespace Store
             Items = new OrderItemCollection(dto);
         }
 
-        public static class Factory
+        public static class DtoFactory
         {
             public static OrderDto Create() => new OrderDto();
         }
