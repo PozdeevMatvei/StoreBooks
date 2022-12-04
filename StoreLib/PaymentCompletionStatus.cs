@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Store
 {
-    public enum PaymentCompletionOptions
+    public enum PaymentCompletionStatus
     {
         orderNotPaid,
         orderPaid,

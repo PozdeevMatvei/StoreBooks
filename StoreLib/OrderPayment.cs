@@ -23,8 +23,8 @@ namespace Store
 
         private static string SetIsCompletePaymentOrder(IReadOnlyDictionary<string, string>? parameters)
         {
-            if (parameters != null && parameters.ContainsKey("IsCompletePaymentOrder"))
-                return parameters["IsCompletePaymentOrder"] == PaymentCompletionOptions.orderPaid.ToString() ? "Заказ оплачен." : "Заказ не оплачен.";
+            if (parameters != null && parameters.ContainsKey("IsCompletedPaymentOrder"))
+                return parameters["IsCompletedPaymentOrder"] == PaymentCompletionStatus.orderPaid.ToString() ? "Заказ оплачен." : "Заказ не оплачен.";
           
             return "Заказ не оплачен.";
         }

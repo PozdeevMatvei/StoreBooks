@@ -37,7 +37,7 @@ namespace Store.DTO.EF
                 (
                     new BookDto 
                     {
-                        BookId = 1, 
+                        Id = 1, 
                         Isbn = "ISBN 11111-12341",
                         Title = "Clr via c#",
                         Author = "Джефри Рихтер",
@@ -46,7 +46,7 @@ namespace Store.DTO.EF
                     },
                     new BookDto
                     {
-                        BookId = 1,
+                        Id = 2,
                         Isbn = "ISBN 11111-12342",
                         Title = "C# 4.0",
                         Author = "Герберт Шилдт",
@@ -55,7 +55,7 @@ namespace Store.DTO.EF
                     },
                     new BookDto
                     {
-                        BookId = 1,
+                        Id = 3,
                         Isbn = "ISBN 11111-12343",
                         Title = "Clear Code",
                         Author = "Роберт Мартин",
@@ -83,7 +83,7 @@ namespace Store.DTO.EF
             modelBuilder.Entity<OrderDto>(action =>
             {
                 action.Property(dto => dto.CellPhone)
-                      .HasMaxLength(15);
+                      .HasMaxLength(17);
                 action.Property(dto => dto.DeliveryPrice)
                       .HasColumnType("money");
 

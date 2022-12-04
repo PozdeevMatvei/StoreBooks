@@ -14,10 +14,10 @@ namespace Store.Web.Controllers
             _orderService = orderService;
         }
 
-        public IActionResult Index(int bookId)
+        public async Task<IActionResult> Index(int bookId)
         {
-            BookModel book = _bookService.GetById(bookId);
-            book.IsBookCart = _orderService.IsBookInCart(bookId);
+            BookModel book = await _bookService.GetByIdAsync(bookId);
+            book.IsBookCart = await _orderService.IsBookInCartAsync(bookId);
 
             return View(book);
         }

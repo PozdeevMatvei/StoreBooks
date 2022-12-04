@@ -8,7 +8,7 @@ namespace Store.DTO
 {
     public class OrderDto
     {
-        public int OrderId { get; set; }
+        public int Id { get; set; }
         public string? CellPhone { get; set; }
         public int TotalCount { get; set; }
         public decimal TotalPrice { get; set; }

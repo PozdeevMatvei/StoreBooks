@@ -8,8 +8,8 @@ namespace Store
 {
     public interface IOrderRepository
     {
-        Order Create();
-        Order GetById(int orderId);
-        void Update(Order order);
+        Task<Order> CreateAsync();
+        Task<Order> GetByIdAsync(int orderId);
+        Task UpdateAsync(Order order);
     }
 }

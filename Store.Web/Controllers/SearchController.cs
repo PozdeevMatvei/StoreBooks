@@ -10,9 +10,9 @@ namespace Store.Web.Controllers
         {
             _bookService = bookService;
         }
-        public IActionResult Index(string query)
+        public async Task<IActionResult> Index(string query)
         {
-            var books = _bookService.GetAllByQuery(query);
+            var books = await _bookService.GetAllByQueryAsync(query);
             return View(books);
         }
     }

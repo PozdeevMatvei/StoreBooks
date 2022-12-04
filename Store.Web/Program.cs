@@ -1,6 +1,5 @@
 using Store;
 using Store.Contractors;
-using Store.Memory;
 using Store.Messages;
 using Store.YandexKassa;
 using Store.Web.Contractors;
@@ -20,8 +19,8 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddEF(builder.Configuration.GetConnectionString("Store")!);
-builder.Services.AddSingleton<IBookRepository, MockBookRepository>();
-builder.Services.AddSingleton<IOrderRepository, MockOrderRepository>();
+builder.Services.AddSingleton<IBookRepository, BookRepository>();
+builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
 builder.Services.AddSingleton<IPaymentService, CashPaymentService>();
 builder.Services.AddSingleton<INotificationService, DebugNotificationService>();

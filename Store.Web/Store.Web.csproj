@@ -8,15 +8,20 @@
 
   <ItemGroup>
     <ProjectReference Include="..\infrastructure\Store.Data.EF\Store.DTO.EF.csproj" />
-    <ProjectReference Include="..\plugins\Store.Web.Contractors\Store.Web.Contractors.csproj" />
     <ProjectReference Include="..\plugins\Store.YandexKassa\Store.YandexKassa.csproj" />
-    <ProjectReference Include="..\Store.Memory\Store.Memory.csproj" />
     <ProjectReference Include="..\Store.Web.App\Store.Web.App.csproj" />
     <ProjectReference Include="..\StoreLib\Store.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

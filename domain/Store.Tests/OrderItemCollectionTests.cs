@@ -11,14 +11,14 @@ namespace Store.Tests
     {
         private OrderItem CreateTestOrderItem(int bookId = 1, decimal price = 10m, int count = 1)
         {
-            var orderDto = Order.Factory.Create();
+            var orderDto = Order.DtoFactory.Create();
             var orderItemDto = OrderItem.DtoFactory.Create(orderDto, bookId, price, count);
 
             return new OrderItem(orderItemDto);
         }
         private OrderItemCollection CreateTestOrderItemCollection()
         {
-            var orderDto = Order.Factory.Create();
+            var orderDto = Order.DtoFactory.Create();
             return new OrderItemCollection(orderDto);
         }
         [Fact]

@@ -15,17 +15,17 @@ namespace Store.Web.App
             _bookRepository = bookRepository;
         }
 
-        public BookModel GetById(int bookId)
+        public async Task<BookModel> GetByIdAsync(int bookId)
         {
-            Book book = _bookRepository.GetById(bookId);
+            Book book = await _bookRepository.GetByIdAsync(bookId);
 
             return Map(book);
         }
-        public IReadOnlyCollection<BookModel> GetAllByQuery(string query)
+        public async Task<IReadOnlyCollection<BookModel>> GetAllByQueryAsync(string query)
         {
             var books = Book.IsIsbn(query)
-                        ? _bookRepository.GetAllByIsbn(query)
-                        : _bookRepository.GetAllByTitleOrAuthor(query);
+                        ? await _bookRepository.GetAllByIsbnAsync(query)
+                        : await _bookRepository.GetAllByTitleOrAuthorAsync(query);
 
             return books.Select(Map).ToArray();
         }

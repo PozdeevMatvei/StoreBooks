@@ -11,8 +11,8 @@ namespace Store.Memory
         private readonly List<Order> _orders = new();
         public Order Create()
         {
-            var orderDto = Order.Factory.Create();
-            orderDto.OrderId = _orders.Count + 1;
+            var orderDto = Order.DtoFactory.Create();
+            orderDto.Id = _orders.Count + 1;
             var order = new Order(orderDto);
 
             _orders.Add(order);

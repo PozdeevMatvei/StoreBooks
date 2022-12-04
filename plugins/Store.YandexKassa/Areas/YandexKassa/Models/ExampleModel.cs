@@ -10,7 +10,7 @@ namespace Store.YandexKassa.Areas.YandexKassa.Models
     (
         int OrderId, 
         string ReturnUri, 
-        PaymentCompletionOptions IsCompletedPaymentOrder = PaymentCompletionOptions.orderNotPaid
+        PaymentCompletionStatus IsCompletedPaymentOrder = PaymentCompletionStatus.orderNotPaid
     );
     
 }

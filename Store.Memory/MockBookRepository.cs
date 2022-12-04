@@ -10,7 +10,7 @@
                                                   this.description,
                                                   this.title,
                                                   this.price);
-            bookDto.BookId = this.id;
+            bookDto.Id = this.id;
             return new Book(bookDto);
         }
     }

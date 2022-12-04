@@ -17,7 +17,7 @@ namespace Store.YandexKassa.Areas.YandexKassa.Controllers
         [Route("{area}/{controller}/{action}")]
         public IActionResult Callback(int orderId, string returnUri)
         {
-            return View(new ExampleModel(orderId, returnUri, PaymentCompletionOptions.orderPaid));
+            return View(new ExampleModel(orderId, returnUri, PaymentCompletionStatus.orderPaid));
         }
     }
 }
