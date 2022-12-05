@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store.DTO.EF
 {
@@ -30,7 +25,7 @@ namespace Store.DTO.EF
         {
             var dbContext = _dbContextFactory.GetOrCreate(typeof(OrderRepository));
             var orderDto = await dbContext.Orders
-                                    .Include(order => order.Items)  
+                                    .Include(order => order.Items)
                                     .SingleAsync(order => order.Id == orderId);
 
             return Order.Mapper.Map(orderDto);

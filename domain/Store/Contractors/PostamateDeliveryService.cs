@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Store.Contractors
+﻿namespace Store.Contractors
 {
     public class PostamateDeliveryService : IDeliveryService
     {
@@ -80,10 +74,10 @@ namespace Store.Contractors
 
         public OrderDelivery GetDelivery(Form form)
         {
-            if(form == null)
+            if (form == null)
                 throw new ArgumentNullException(nameof(form));
 
-            if(form.ServiceName != Name || !form.IsFinal)
+            if (form.ServiceName != Name || !form.IsFinal)
                 throw new InvalidOperationException("invalid form.");
 
             var cityId = form.Parameters["city"];

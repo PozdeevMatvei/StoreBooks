@@ -54,5 +54,5 @@ namespace Store.Web.App
         //    return value;
         //}
 
-    }   
+    }
 }

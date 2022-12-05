@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Store.Tests
+﻿namespace Store.Tests
 {
     public class OrderTests
     {
@@ -49,6 +43,6 @@ namespace Store.Tests
 
             Assert.Equal(5 * 10m + 10 * 100m, order.TotalPrice);
         }
-    
+
     }
 }

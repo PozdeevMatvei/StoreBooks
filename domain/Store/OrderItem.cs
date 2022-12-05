@@ -1,17 +1,12 @@
 ﻿using Store.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store
 {
     public class OrderItem
     {
         private readonly OrderItemDto _dto;
-        public int BookId  => _dto.BookId;
-        public int Count 
+        public int BookId => _dto.BookId;
+        public int Count
         {
             get { return _dto.Count; }
             set
@@ -23,8 +18,8 @@ namespace Store
         }
         public decimal Price
         {
-            get => _dto.Price; 
-            set => _dto.Price = value; 
+            get => _dto.Price;
+            set => _dto.Price = value;
         }
 
         public OrderItem(OrderItemDto dto)
@@ -42,7 +37,7 @@ namespace Store
         {
             public static OrderItemDto Create(OrderDto order, int bookId, decimal price, int count)
             {
-                if(order == null)
+                if (order == null)
                     throw new ArgumentNullException(nameof(order));
 
                 ThrowIfInvalidCount(count);

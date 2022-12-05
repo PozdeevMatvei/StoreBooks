@@ -1,17 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Store.Contractors;
 using Store.Web.Contractors;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store.YandexKassa
 {
     public class YandexKassaPaymentService : IWebContractorService, IPaymentService
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;   
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public YandexKassaPaymentService(IHttpContextAccessor httpContextAccessor)
         {
@@ -22,7 +17,7 @@ namespace Store.YandexKassa
         public string Name => "YandexKassa";
         public string Title => "Оплата банковской картой";
 
-        
+
 
         public Form FirstForm(Order order)
         {

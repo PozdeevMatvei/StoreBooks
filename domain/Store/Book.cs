@@ -23,7 +23,7 @@ namespace Store
             get => _dto.Title;
             set
             {
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                     throw new ArgumentException(nameof(Title));
 
                 _dto.Title = value.Trim();
@@ -44,7 +44,7 @@ namespace Store
             get => _dto.Price;
             set
             {
-                if(value > 0)
+                if (value > 0)
                     _dto.Price = value;
 
                 throw new ArgumentException(nameof(Price));
@@ -64,12 +64,12 @@ namespace Store
                                          string description,
                                          decimal price)
             {
-                if(TryFormatIsbn(isbn, out string? formatedIsbn))
+                if (TryFormatIsbn(isbn, out string? formatedIsbn))
                     isbn = formatedIsbn!;
                 else
                     throw new ArgumentException(nameof(isbn));
 
-                if(string.IsNullOrEmpty(title))
+                if (string.IsNullOrEmpty(title))
                     throw new ArgumentException(nameof(title));
 
                 if (price <= 0)
@@ -106,6 +106,6 @@ namespace Store
 
         }
         public static bool IsIsbn(string? query) => TryFormatIsbn(query, out _);
-        
+
     }
 }

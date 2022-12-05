@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Store.Tests
+﻿namespace Store.Tests
 {
     public class OrderItemTests
     {
@@ -28,7 +22,7 @@ namespace Store.Tests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                CreateTestOrderItem(1, 0m,-1);
+                CreateTestOrderItem(1, 0m, -1);
             });
         }
         [Fact]
@@ -57,7 +51,7 @@ namespace Store.Tests
         {
             var orderItem = CreateTestOrderItem(1, 0m, 4);
             orderItem.Count = 2;
-            
+
             Assert.Equal(2, orderItem.Count);
 
         }

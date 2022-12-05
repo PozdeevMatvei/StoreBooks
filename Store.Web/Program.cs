@@ -1,11 +1,10 @@
 using Store;
 using Store.Contractors;
-using Store.Messages;
-using Store.YandexKassa;
-using Store.Web.Contractors;
-using Store.Web.App;
 using Store.DTO.EF;
-using Microsoft.Extensions.FileSystemGlobbing.Internal.Patterns;
+using Store.Messages;
+using Store.Web.App;
+using Store.Web.Contractors;
+using Store.YandexKassa;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();

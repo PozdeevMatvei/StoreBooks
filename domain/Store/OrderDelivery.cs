@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Store
+﻿namespace Store
 {
     public class OrderDelivery
     {
         public string Name { get; }
         public string Description { get; }
         public decimal Price { get; }
-        public IReadOnlyDictionary<string,string> Parameters { get; }
+        public IReadOnlyDictionary<string, string> Parameters { get; }
 
-        public OrderDelivery(string name, 
+        public OrderDelivery(string name,
                              string description,
                              decimal price,
                              IReadOnlyDictionary<string, string> parameters)
         {
-            if(string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException(nameof(name));
-            if(string.IsNullOrWhiteSpace(description))
+            if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException(nameof(description));
-            if(parameters == null)
+            if (parameters == null)
                 throw new ArgumentNullException(nameof(parameters));
 
             Name = name;

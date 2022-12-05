@@ -1,9 +1,4 @@
 ﻿using Store.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store
 {
@@ -16,7 +11,7 @@ namespace Store
             get => _dto.CellPhone;
             set
             {
-                if(string.IsNullOrWhiteSpace(value))
+                if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException(nameof(CellPhone));
 
                 _dto.CellPhone = value;
@@ -30,7 +25,7 @@ namespace Store
         {
             get
             {
-                if(_dto.DeliveryName == null)
+                if (_dto.DeliveryName == null)
                     return null;
 
                 return new OrderDelivery(_dto.DeliveryName,
@@ -40,7 +35,7 @@ namespace Store
             }
             set
             {
-                if(value == null)
+                if (value == null)
                     throw new ArgumentNullException(nameof(Delivery));
 
                 _dto.DeliveryName = value.Name;
@@ -69,7 +64,7 @@ namespace Store
 
                 _dto.PaymentName = value.Name;
                 _dto.PaymentDescription = value.Description;
-                _dto.PaymentParameters = value.Parameters.ToDictionary(param => param.Key,
+                _dto.PaymentParameters = value.Parameters?.ToDictionary(param => param.Key,
                                                                        param => param.Value);
 
             }
@@ -77,16 +72,14 @@ namespace Store
 
         public Order(OrderDto dto)
         {
-            if (dto == null)
-                throw new ArgumentNullException(nameof(OrderDto));
+            _dto = dto ?? throw new ArgumentNullException(nameof(dto));
 
-            _dto = dto;
             Items = new OrderItemCollection(dto);
         }
 
         public static class DtoFactory
         {
-            public static OrderDto Create() => new OrderDto();
+            public static OrderDto Create() => new();
         }
         public static class Mapper
         {

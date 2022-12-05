@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\domain\Store\Store.csproj" />
     <ProjectReference Include="..\infrastructure\Store.Data.EF\Store.DTO.EF.csproj" />
     <ProjectReference Include="..\plugins\Store.YandexKassa\Store.YandexKassa.csproj" />
     <ProjectReference Include="..\Store.Web.App\Store.Web.App.csproj" />
-    <ProjectReference Include="..\StoreLib\Store.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Newtonsoft.Json;
 
 namespace Store.DTO.EF
@@ -35,9 +34,9 @@ namespace Store.DTO.EF
 
                 action.HasData
                 (
-                    new BookDto 
+                    new BookDto
                     {
-                        Id = 1, 
+                        Id = 1,
                         Isbn = "ISBN 11111-12341",
                         Title = "Clr via c#",
                         Author = "Джефри Рихтер",
@@ -64,7 +63,7 @@ namespace Store.DTO.EF
                     }
                 );
             });
-            
+
         }
         private static void BuildOrderItems(ModelBuilder modelBuilder)
         {
@@ -98,6 +97,6 @@ namespace Store.DTO.EF
                         value => JsonConvert.DeserializeObject<Dictionary<string, string>>(value));
             });
         }
-        
+
     }
 }

@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store.DTO.EF
 {
     public class BookRepository : IBookRepository
     {
-        private readonly StoreDbContextFactory _dbContextFactory; 
+        private readonly StoreDbContextFactory _dbContextFactory;
 
         public BookRepository(StoreDbContextFactory dbContextFactory)
         {
@@ -25,11 +20,11 @@ namespace Store.DTO.EF
 
             return bookDtos.Select(Book.Mapper.Map)
                            .ToArray();
-        }      
+        }
 
         public async Task<Book[]> GetAllByIsbnAsync(string isbn)
         {
-            if(Book.TryFormatIsbn(isbn, out string? formatedIsbn))
+            if (Book.TryFormatIsbn(isbn, out string? formatedIsbn))
             {
                 var dbContext = _dbContextFactory.GetOrCreate(typeof(BookRepository));
                 var bookDtos = await dbContext.Books
@@ -50,14 +45,14 @@ namespace Store.DTO.EF
                                     .Where(book => book.Title
                                                        .ToLower()
                                                        .Contains(titleOrAuthor.ToLower())
-                                                || book.Author != null 
+                                                || book.Author != null
                                                 && book.Author
                                                        .ToLower()
                                                        .Contains(titleOrAuthor.ToLower()))
                                     .ToArrayAsync();
-            
 
-            return bookDtos.Select(Book.Mapper.Map).ToArray();            
+
+            return bookDtos.Select(Book.Mapper.Map).ToArray();
         }
 
         public async Task<Book> GetByIdAsync(int id)

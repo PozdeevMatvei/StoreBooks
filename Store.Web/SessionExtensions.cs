@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace Store.Web
+﻿namespace Store.Web
 {
     public static class SessionExtensions
     {

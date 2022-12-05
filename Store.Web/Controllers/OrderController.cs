@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Store.Messages;
-using System.Text.RegularExpressions;
 using Store.Contractors;
-using Store.Web.Contractors;
 using Store.Web.App;
+using Store.Web.Contractors;
 
 namespace Store.Web.Controllers
 {
@@ -15,10 +13,10 @@ namespace Store.Web.Controllers
         private readonly IEnumerable<IWebContractorService> _webContractorServices;
 
         public OrderController(OrderService orderService,
-                               IEnumerable<IDeliveryService> deliveryServices, 
-                               IEnumerable<IPaymentService> paymentServices, 
+                               IEnumerable<IDeliveryService> deliveryServices,
+                               IEnumerable<IPaymentService> paymentServices,
                                IEnumerable<IWebContractorService> webContractorServices)
-        {        
+        {
             _orderService = orderService;
             _deliveryServices = deliveryServices;
             _paymentServices = paymentServices;
@@ -38,7 +36,7 @@ namespace Store.Web.Controllers
         {
             await _orderService.AddOrderItemAsync(bookId, count);
 
-            return RedirectToAction(nameof(BookController.Index), "Book", new { BookId = bookId});
+            return RedirectToAction(nameof(BookController.Index), "Book", new { BookId = bookId });
         }
         [HttpPost]
         public async Task<IActionResult> RemoveOrderItem(int bookId)
@@ -143,7 +141,7 @@ namespace Store.Web.Controllers
             return Redirect(redirectUri.ToString());
         }
         [HttpPost]
-        public async Task<IActionResult> NextPayment(string serviceName, int step, 
+        public async Task<IActionResult> NextPayment(string serviceName, int step,
             Dictionary<string, string> parameters)
         {
             var paymentService = _paymentServices.Single(service => service.Name == serviceName);
@@ -154,12 +152,12 @@ namespace Store.Web.Controllers
                 return View("PaymentStep", form);
 
             var payment = paymentService.GetPayment(form);
-            var orderModel = await _orderService.SetPaymentAsync(payment); 
+            var orderModel = await _orderService.SetPaymentAsync(payment);
 
             return View("Finish", orderModel);
         }
-        
-       
+
+
         private Uri GetReturnUri(string action)
         {
             var builder = new UriBuilder(Request.Scheme, Request.Host.Host)

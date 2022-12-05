@@ -1,10 +1,5 @@
 ﻿using Store.DTO;
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Store
 {
@@ -15,7 +10,7 @@ namespace Store
 
         public OrderItemCollection(OrderDto orderDto)
         {
-            if(orderDto == null)
+            if (orderDto == null)
                 throw new ArgumentNullException(nameof(orderDto));
 
             _orderDto = orderDto;
@@ -29,7 +24,7 @@ namespace Store
         public bool TryGet(int bookId, out OrderItem? orderItem)
         {
             var index = _items.FindIndex(item => item.BookId == bookId);
-            if(index == -1)
+            if (index == -1)
             {
                 orderItem = null;
                 return false;
@@ -65,13 +60,13 @@ namespace Store
         {
             if (TryGet(orderItem.BookId, out _))
                 throw new InvalidOperationException("Book alredy exists.");
-            if(orderItem.Count < 1 )
+            if (orderItem.Count < 1)
                 throw new InvalidOperationException("Too few books to add.");
 
             var orderItemDto = OrderItem.Mapper.Map(orderItem);
 
             _orderDto.Items.Add(orderItemDto);
-            
+
             _items.Add(orderItem);
 
             return orderItem;
@@ -88,6 +83,6 @@ namespace Store
 
         public IEnumerator<OrderItem> GetEnumerator() => _items.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => (_items as IEnumerable).GetEnumerator();
-        
+
     }
 }

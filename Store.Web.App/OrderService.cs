@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PhoneNumbers;
 using Store.Messages;
-using System.Text;
 
 namespace Store.Web.App
 {
@@ -13,10 +12,10 @@ namespace Store.Web.App
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         protected ISession Session => _httpContextAccessor.HttpContext.Session;
-        
-        public OrderService(IBookRepository bookRepository, 
-                            IOrderRepository orderRepository, 
-                            INotificationService notificationService, 
+
+        public OrderService(IBookRepository bookRepository,
+                            IOrderRepository orderRepository,
+                            INotificationService notificationService,
                             IHttpContextAccessor httpContextAccessor)
         {
             _bookRepository = bookRepository;
@@ -37,14 +36,14 @@ namespace Store.Web.App
         public async Task<(bool isGetModel, OrderModel? model)> TryGetModelAsync()
         {
             var (isGetModel, order) = await TryGetOrderAsync();
-            if(isGetModel)
+            if (isGetModel)
             {
                 return (true, await MapAsync(order!));
             }
             return (false, null);
         }
         public async Task<OrderModel> AddOrderItemAsync(int bookId, int count)
-        {         
+        {
             var (isGetOrder, order) = await TryGetOrderAsync();
             if (!isGetOrder)
                 order = await _orderRepository.CreateAsync();
@@ -85,7 +84,7 @@ namespace Store.Web.App
             var order = await GetOrderAsync();
             var item = order.Items.Get(bookId);
 
-            if(item.Count < 100)
+            if (item.Count < 100)
                 item.Count += 1;
 
             await _orderRepository.UpdateAsync(order);
@@ -98,7 +97,7 @@ namespace Store.Web.App
             var order = await GetOrderAsync();
             var item = order.Items.Get(bookId);
 
-            if(item.Count > 1)
+            if (item.Count > 1)
                 item.Count -= 1;
 
             await _orderRepository.UpdateAsync(order);
@@ -106,11 +105,11 @@ namespace Store.Web.App
 
             return await MapAsync(order);
         }
-        public async Task<bool> IsBookInCartAsync(int bookId) 
+        public async Task<bool> IsBookInCartAsync(int bookId)
         {
             var (isGetOrder, order) = await TryGetOrderAsync();
 
-            if(isGetOrder)
+            if (isGetOrder)
                 return order!.Items.TryGet(bookId, out OrderItem? orderItem);
 
             return false;
@@ -138,15 +137,15 @@ namespace Store.Web.App
             const string ErrorsKeyCode = "code";
 
             var storedCode = Session.GetInt32(cellPhone);
-            var model = new OrderModel() {CellPhone = cellPhone };
+            var model = new OrderModel() { CellPhone = cellPhone };
 
-            if(storedCode == null)
+            if (storedCode == null)
             {
                 model.Errors[ErrorsKeyCode] = "Что то случилось. Попробуйте получить код еще раз.";
                 return model;
             }
 
-            if(storedCode != confirmationCode)
+            if (storedCode != confirmationCode)
             {
                 model.Errors[ErrorsKeyCode] = "Неверный код. Попробуйте получить код еще раз.";
                 return model;
@@ -183,7 +182,7 @@ namespace Store.Web.App
 
         internal async Task<(bool isGetOrder, Order? order)> TryGetOrderAsync()
         {
-            if(Session.TryGetCart(out Cart? cart))
+            if (Session.TryGetCart(out Cart? cart))
             {
                 var order = await _orderRepository.GetByIdAsync(cart!.OrderId);
                 return (true, order);
@@ -227,7 +226,7 @@ namespace Store.Web.App
         {
             var cart = new Cart(order.OrderId, order.TotalCount, order.TotalPrice);
             Session.Set(cart);
-        }      
+        }
         internal bool TryFormatPhone(string cellPhone, out string? formattedPhone)
         {
             PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.GetInstance();

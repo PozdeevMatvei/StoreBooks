@@ -1,11 +1,4 @@
-﻿using Store.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Store.Tests
+﻿namespace Store.Tests
 {
     public class OrderItemCollectionTests
     {
