@@ -6,12 +6,13 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" type="text/css" media="screen,projection" href="~/css/StyleSheet.css" />
     <link rel="stylesheet" type="text/css" href="~/css/RemoveButtonsInputNumber.css"/>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
 </head>
 <body>
     <div id="header" >
-        <form method="get" asp-controller="search" asp-action="Index">
-            <input name="query" id="searchInput" style="width: 50%" placeholder="автор или название" />
-            <button id="searchInput" type="submit">Искать</button>
+        <form class = "form-inline my-2 my-lg-0" method="get" asp-controller="search" asp-action="Index">
+            <input class="form-control search mr-sm-2" name="query" id="searchInput" style="width: 50%" placeholder="автор или название" />
+            <button class="btn btn-outline-success my-2 my-sm-0"  id="searchInput" type="submit">Искать</button>
         </form>
         <span>
             @{              
@@ -33,5 +34,6 @@
     <div>
         @RenderBody()
     </div>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
