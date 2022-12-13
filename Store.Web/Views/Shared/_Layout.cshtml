@@ -27,13 +27,16 @@
             }
         </span>
     </div> 
-       
-    <nav id="navigation">
-        <a id="navcontent" asp-controller="Home" asp-action="Index">Home</a>
-    </nav>
+      
+    <div>
+        <nav id="navigation">
+            <a id="navcontent" asp-controller="Home" asp-action="Index">Home</a>
+        </nav>
+    </div>
     <div>
         @RenderBody()
     </div>
+
     <script src="~/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

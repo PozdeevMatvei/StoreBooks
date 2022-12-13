@@ -1,12 +1,12 @@
-﻿.flex-container {
-    /*генерирует flex-контейнер уровня блока*/
+﻿/*.flex-container {
+    генерирует flex-контейнер уровня блока
     display: -webkit-flex;
     display: flex;
     flex-direction: row;
 }
 
 .flex-container {
-    /*генерирует flex-контейнер уровня строки*/
+    генерирует flex-контейнер уровня строки
     display: -webkit-inline-flex;
     display: inline-flex;
     flex-direction: row;
@@ -21,25 +21,25 @@ html {
     color: #333333;
     background-color: #ffffff;
     font: normal 20px "Trebuchet MS", "Lucida Grande", Verdana, Sans-Serif;
-}
+}*/
 
 /* Headings */
 
-h1, h2, h3, h4, h5, h6 {
+/*h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
     margin: 10px 0 15px;
-}
+}*/
 
-    h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+ /*   h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
         font-weight: normal;
         border-bottom-width: 0;
     }
 
 h1 {
     font-size: 32px;
-}
+}*/
 
-h2 {
+/*h2 {
     font-size: 28px;
 }
 
@@ -49,11 +49,11 @@ h3 {
 
 h4, h5, h6 {
     font-size: 20px;
-}
+}*/
 
 /* Lists */
 
-ul, ol, dl {
+/*ul, ol, dl {
     margin: 15px 25px;
     line-height: 2.0em;
 }
@@ -64,10 +64,10 @@ ol {
 
 ul {
     list-style-type: square;
-}
+}*/
 
 /* Links */
-a {
+/*a {
     text-decoration: none;
     font-weight: bold;
     border-bottom: 1px dotted #333333;
@@ -90,12 +90,7 @@ a {
     }
 
 
-#header {
-    background-color: cornflowerblue;
-    padding: 2px;
-    border-top: 1px solid #000000;
-    border-bottom: 1px solid #000000;
-}
+
 
 #navigation {
     float: left;
@@ -118,9 +113,16 @@ a {
 #searchInput {
     padding: 2px;
     font-size: 20px;
-}
+}*/
 
 /* Header */
+
+/*#header {
+    background-color: cornflowerblue;
+    padding: 2px;
+    border-top: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
 
 #header h1 {
     font-size: 13px;
@@ -131,5 +133,39 @@ a {
 #header a {
     border-bottom-width: 0;
     color: #ffffff;
+}*/
+
+/*cart-container*/
+
+.cart-border {
+    border-width: 2px;
+    border-color: black;
+    border-style: solid;
 }
 
+.cart-container {
+    width: 200px;
+    height: 300px;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+    .cart-container.header {
+        height: 20%;
+        background-color: aqua;
+    }
+    .cart-container.body {
+        height: 60%;
+        background-color: aquamarine;
+    }
+    .cart-container.footer {
+        height: 20%;
+        background-color: blue;
+    }
+
+    .cart-container p,h3{
+        margin: 0;
+    }
+  
