@@ -135,6 +135,49 @@ ul {
     color: #ffffff;
 }*/
 
+/*nav-bar*/
+
+body{
+    margin: 0;
+}
+.nav-bar {
+    margin-top: 0;
+    margin-left: 0;
+    margin-bottom: 0.1%;
+    margin-right: 0.1%;
+    box-sizing: border-box;
+    
+}
+    .nav-bar.top {
+        height: 100px;
+        background-color: #4c4faf;
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+    .nav-bar.left {
+        width: 20%;
+        min-height: 500px;
+        float: left;
+        background-color: #4c4faf;
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+    .nav-bar.body {
+        min-height: 500px;
+        width: 79.8%;
+        float: left;
+        background-color: #e0d3d3;
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+    .nav-bar h1,p{
+        margin: 0;
+    }
+    .nav-bar input, button{
+        border-radius: 0.5rem;
+        height: 2.5rem;
+    }
+
 /*cart-container*/
 
 .cart-border {
