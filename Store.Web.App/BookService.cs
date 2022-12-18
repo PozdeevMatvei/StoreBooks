@@ -17,6 +17,9 @@
         }
         public async Task<IReadOnlyCollection<BookModel>> GetAllByQueryAsync(string query)
         {
+            if (query == null)
+                return Array.Empty<BookModel>();
+
             var books = Book.IsIsbn(query)
                         ? await _bookRepository.GetAllByIsbnAsync(query)
                         : await _bookRepository.GetAllByTitleOrAuthorAsync(query);

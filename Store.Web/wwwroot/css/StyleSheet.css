@@ -1,4 +1,5 @@
-﻿
+﻿/*html*/
+
 html, body {
     height: 100%;
     margin: 0;
@@ -8,6 +9,17 @@ html, body {
 a{
     text-decoration: none;
 }
+
+/*invalid*/
+
+input:invalid {
+    color: red;
+}
+
+input:invalid:required {
+
+}
+
 /*nav-bar*/
 
 .nav-bar{
