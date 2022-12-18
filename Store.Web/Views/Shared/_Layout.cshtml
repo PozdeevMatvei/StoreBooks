@@ -14,8 +14,8 @@
             <div class="nav-panel">
                 <form  class="search" method="get" asp-controller="search" asp-action="Index">
                     <label class="search-label">
-                        <input class="search-input" name="query" placeholder="автор или название" />                        
-                        <button type="submit">Искать</button>
+                        <input class="search-input" id="search" name="query" placeholder="автор или название" />
+                        <button type="submit" id="send">Искать</button>
                     </label>
                 </form>
                
@@ -56,5 +56,6 @@
     </div>
 
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
+    @*<script type="text/javascript" src="~/js/JavaScript.js"></script>*@
 </body>
 </html>
