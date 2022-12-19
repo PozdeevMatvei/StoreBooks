@@ -8,16 +8,16 @@
 
 <div class="card-container cart-border">
 
-    <div class="card-container header">
+    <div class="card-container-header">
         <h3>@Model.Title</h3>
     </div>
 
-    <div class="card-container body">
+    <div class="card-container-body">
         <p><strong>@Model.Author</strong></p>
         <p>@Model.Description</p>
     </div>
 
-    <div class="card-container footer">
+    <div class="card-container-footer">
         <p>Цена: <strong>@Model.Price</strong></p>
         <form method="post" action="@Url.Action(nameof(OrderController.AddOrderItem), "Order")" method="post">
             <input type="hidden" name="bookId" value="@Model.BookId"/>
