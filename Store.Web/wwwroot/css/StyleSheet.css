@@ -28,13 +28,13 @@ input:invalid:required {
 
 /*nav-bar*/
 
-.nav-bar{
+.body-container{
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-.nav-bar-top {
+.body-container-nav-bar {
     height: 100px;
     background-color: #4c4faf;
     padding: 10px;
@@ -43,7 +43,7 @@ input:invalid:required {
     border-color: black;
 }
 
-.nav-bar-body {
+.body-container-content {
     flex: 1;
     background-color: #e0d3d3;
     padding: 10px;
@@ -294,4 +294,67 @@ input:invalid:required {
 
 .cart-item-block-totalPrice > p{
     font-weight: 500;
+}
+
+/*cart-order-container*/
+
+.cart-create-order-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+.cart-order-container-label{
+    margin-bottom: 20px;
+}
+.cart-order-container-confirmationPhone{
+
+}
+
+
+/*container*/
+
+.column-container{
+    display: flex;
+    flex-direction: column;
+}
+.line-container{
+    display: flex;
+}
+
+.container-label{
+    margin: 20px;
+}
+.container-content{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.container-dopContent {
+    display: flex;
+    margin-top: 20px;
+}
+.container-content-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/*style container-content(form)*/
+
+.container-content button {
+    width: 10rem;
+    margin-top: 10px;
+}
+
+.container-content-form label {
+    font-weight: 500;
+}
+.container-content-form input{
+    width: 10rem;
+    text-align: center;
+}
+.container-content-form select {
+    margin-bottom: 10px;
+    width: 15rem;
+}
+.container-content-form small{
+    color: red;
 }

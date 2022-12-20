@@ -1,15 +1,15 @@
 ﻿@model OrderModel
 
-<p>
-    Ваш заказ успешно оформлен. Ожидайте смс от службы доставки.
-</p>
-<p>
-    <p>Детали заказа</p>
-    <div>
+<div class="column-container">
+    <div class="container-label">
+        <h3>Ваш заказ успешно оформлен. Ожидайте смс от службы доставки.</h3>
+    </div>
+    <div class="container-content">
+        <h4>Детали заказа</h4>
         <p>@Model.DeliveryDescription</p>
         <p>@Model.PaymentDescription</p>
     </div>
-</p>
-<p>
-    <a href="@Url.Action(nameof(HomeController.Index), "Home")">Вернуться в магазин.</a>
-</p>
+    <div class="container-dopContent">
+        <a type="button" href="@Url.Action(nameof(HomeController.Index), "Home")">Вернуться в магазин.</a>
+    </div>
+</div>

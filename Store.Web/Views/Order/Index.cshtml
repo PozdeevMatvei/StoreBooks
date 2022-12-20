@@ -11,17 +11,7 @@
     </div>
 
     <div class="cart-body">
-        <table class="cart-items-list-table">
-            @*<thead>
-            <tr>
-            <th>№</th>
-            <th>Название</th>
-            <th>Автор</th>
-            <th>Количество</th>
-            <th>Цена</th>
-            <th></th>
-            </tr>
-            </thead>*@
+        <table class="cart-items-list-table">          
             <tbody class="cart-items-list-table-body">
                 @foreach (var item in Model.OrderItems)
                 {
@@ -88,24 +78,32 @@
                 </td>
                 <td>
                     <div class="cart-item-block-totalPrice">
-                        <p>@Model.TotalPrice</p>
+                        <p>@Model.TotalPrice.ToString("C")</p>
                     </div>                  
                 </td>          
             </tr>
             </tfoot>
         </table>
 
-        <form action="@Url.Action(nameof(OrderController.SendConfirmationCode))" method="post">
-            <div>
-                <label for="cellPhone">Мобильный телефон</label>
-                <input type="text" name="cellPhone" value="+79876543210" />
-                @if (Model.Errors.ContainsKey("cellPhone"))
-                {
-                    <small>@Model.Errors["cellPhone"]</small>
-                }
+        <div class="cart-create-order-container">
+            <div class="cart-order-container-label">
+                <h2>Оформление заказа:</h2>
             </div>
-            <button type="submit">Отправить код</button>
-        </form>
+            <div class="cart-order-container-confirmationPhone">
+                <h5>Подтвердите номер телефона</h5>
+                <form action="@Url.Action(nameof(OrderController.SendConfirmationCode))" method="post">
+                    <div>
+                        <label for="cellPhone">Мобильный телефон</label>
+                        <input type="text" name="cellPhone" placeholder="+79876543210" />
+                        @if (Model.Errors.ContainsKey("cellPhone"))
+                        {
+                            <small>@Model.Errors["cellPhone"]</small>
+                        }
+                    </div>
+                    <button type="submit">Отправить код</button>
+                </form>
+            </div>            
+        </div>       
     </div>
 
 </div>
