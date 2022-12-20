@@ -4,26 +4,37 @@
     ViewData["Title"] = "Подтверждение мобильного";
 }
 
-<h1>Подтверждение мобильного телефона.</h1>
-
-<form asp-action="@nameof(OrderController.ConfirmCellPhone)" method="post">
-    <input type="hidden" name="cellPhone" value="@Model.CellPhone" />
-    <div>
-        <label for="code">Код подтверждения</label>
-        <input type="text" name="code" placeholder="0000"/>       
-        <button type="submit">Проверить</button>
-        @if (Model.Errors.ContainsKey("code"))
-        {
-            <small>@Model.Errors["code"]</small>
-        }
+<div class="column-container">
+    <div class="container-label">
+        <h3>Подтверждение мобильного телефона</h3>
     </div>
-</form>
-
-<form asp-action="@nameof(OrderController.SendConfirmationCode)" method="post">
-    <input type="hidden" name="orderId" value="@Model.OrderId"/>
-    <div>
-        <label for="cellPhone">Мобильный телефон</label>
-        <input type="text" name="cellPhone" value="@Model.CellPhone" />
+    <div class="container-content">
+        <form asp-action="@nameof(OrderController.ConfirmCellPhone)" method="post">
+            <input type="hidden" name="cellPhone" value="@Model.CellPhone" />
+            <div class="container-content-form">
+                <label for="code">Код подтверждения</label>
+                <input type="text" name="code" placeholder="1234" />
+                <button type="submit">Проверить</button>
+                @if (Model.Errors.ContainsKey("code"))
+                {
+                    <small>@Model.Errors["code"]</small>
+                }
+            </div>
+        </form>
     </div>
-    <button type="submit">Повторить код</button>
-</form>
+    <div class="container-dopContent">
+        <form asp-action="@nameof(OrderController.SendConfirmationCode)" method="post">
+            <input type="hidden" name="orderId" value="@Model.OrderId" />
+            <div>
+                <label for="cellPhone">Мобильный телефон</label>
+                <input type="text" name="cellPhone" value="@Model.CellPhone" />
+            </div>
+            <button type="submit">Повторить код</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+

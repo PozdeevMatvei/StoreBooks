@@ -9,8 +9,8 @@
     <link rel="stylesheet" type="text/css" href="~/css/StyleSheet.css" />
 </head>
 <body>
-    <div class="nav-bar">
-        <div class="nav-bar-top" >
+    <div class="body-container">
+        <div class="body-container-nav-bar" >
             <div class="nav-panel">
                 <form  class="search" method="get" asp-controller="search" asp-action="Index">
                     <label class="search-label">
@@ -50,7 +50,7 @@
         @*<div class="nav-bar left">
             <p>ads</p>
         </div>*@
-        <div class="nav-bar-body">
+        <div class="body-container-content">
             @RenderBody()
         </div>
     </div>

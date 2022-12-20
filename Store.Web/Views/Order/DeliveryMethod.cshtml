@@ -3,17 +3,23 @@
 @{
     ViewData["Title"] = "Способ доставки";
 }
-
-<h1>Способ доставки</h1>
-<form action="@Url.Action(nameof(OrderController.StartDelivery))" method="post">
-    <div>
-        <label for="serviceName">Способ доставки</label>
-        <select name="serviceName">
-            @foreach(var methodDelivery in Model)
-            {
-                <option value="@methodDelivery.Key">@methodDelivery.Value</option>
-            }
-        </select>
+<div class="column-container">
+    <div class="container-label">
+        <h3>Выберите cпособ доставки</h3>
     </div>
-    <button type="submit">Далее</button>
-</form>
+    <div class="container-content">
+        <form action="@Url.Action(nameof(OrderController.StartDelivery))" method="post">
+            <div class="container-content-form">
+                <label for="serviceName">Способ доставки</label>
+                <select name="serviceName">
+                    @foreach (var methodDelivery in Model)
+                    {
+                        <option value="@methodDelivery.Key">@methodDelivery.Value</option>
+                    }
+                </select>                
+            </div>     
+            <button type="submit">Далее</button>
+        </form>
+    </div>
+</div>
+

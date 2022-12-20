@@ -4,29 +4,37 @@
     ViewData["Title"] = "Параметры доставки";
 }
 
-<h1>Параметры доставки</h1>
-
-<form action="@Url.Action(nameof(OrderController.NextDelivery))" method="post">
-    <input type="hidden" name="serviceName" value="@Model.ServiceName"/>
-    <input type="hidden" name="step" value="@Model.Step"/>
-    @foreach (var parameter in Model.Parameters)
-    {
-        <input type="hidden" name="parameters[@parameter.Key]" value="@parameter.Value" />
-    }
-    @foreach(var field in Model.Fields)
-    {        
-        if(field is SelectionField selectionField)
-        {
-            <div>
-                <label for="parameters[@field.Name]">@field.Label</label>
-                <select name="parameters[@field.Name]">
-                    @foreach(var item in selectionField.Items)
+<div class="column-container">
+    <div class="container-label">
+        <h3>Параметры доставки</h3>
+    </div>
+    <div class="container-content">
+        <form action="@Url.Action(nameof(OrderController.NextDelivery))" method="post">
+            <div class="container-content-form">
+                <input type="hidden" name="serviceName" value="@Model.ServiceName" />
+                <input type="hidden" name="step" value="@Model.Step" />
+                @foreach (var parameter in Model.Parameters)
+                {
+                    <input type="hidden" name="parameters[@parameter.Key]" value="@parameter.Value" />
+                }
+                @foreach (var field in Model.Fields)
+                {
+                    if (field is SelectionField selectionField)
                     {
-                        <option value="@item.Key">@item.Value</option>
+                            <label for="parameters[@field.Name]">@field.Label</label>
+                            <select name="parameters[@field.Name]">
+                                @foreach (var item in selectionField.Items)
+                                {
+                                    <option value="@item.Key">@item.Value</option>
+                                }
+                            </select>
                     }
-                </select>
+                }               
             </div>
-        }
-    }
-    <button type="submit">Далее</button>
-</form>
+            <button type="submit">Далее</button>
+        </form>
+    </div>
+</div>
+
+
+

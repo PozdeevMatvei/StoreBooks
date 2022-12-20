@@ -4,69 +4,106 @@
     ViewData["Title"] = "Список товаров в корзине";
 }
 
-<h1>Корзина</h1>
+<div class="cart-main">
 
-<table>
-    <thead>
-        <tr>
-            <th>№</th>
-            <th>Название</th>
-            <th>Автор</th>
-            <th>Количество</th>
-            <th>Цена</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var item in Model.OrderItems)
-        {
-            <tr>
-                <td>@item.BookId</td>
-                <td>@item.Title</td>
-                <td>@item.Author</td>
-                <td>                                       
-                    <form action="@Url.Action(nameof(OrderController.UpdateOrderItem))" method="post">
-                        <input type="hidden" name="bookId" value="@item.BookId" />
-
-                        <a type="button" href="@Url.Action(nameof(OrderController.PutAwayBook), new{ BookId = @item.BookId})">-</a>
-                        <input type="number" name="count" value="@item.Count" max="100" min="1"/>
-                        <a type="button" href="@Url.Action(nameof(OrderController.AddBook), new{ BookId = @item.BookId})">+</a>
-                    </form>
-                    
-                </td>
-                <td>@item.Price</td>
-                <td>
-                    <form action="@Url.Action(nameof(OrderController.RemoveOrderItem))" method="post">
-                        <input type="hidden" name="BookId" value="@item.BookId" />
-                        <button type="submit">Удалить</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        @if(Model.DeliveryPrice != null)
-        {
-            <tr>
-                <td colspan="4">Цена доставки: @Model.DeliveryPrice</td>
-            </tr>
-        }
-        <tr>
-            <td colspan="3">Итого</td>
-            <td>@Model.TotalCount</td>
-            <td>@Model.TotalPrice</td>
-        </tr>
-    </tfoot>
-</table>
-
-<form action="@Url.Action(nameof(OrderController.SendConfirmationCode))" method="post">
-    <div>
-        <label for="cellPhone">Мобильный телефон</label>
-        <input type="text" name="cellPhone" value="+79876543210" />
-        @if (Model.Errors.ContainsKey("cellPhone"))
-        {
-            <small>@Model.Errors["cellPhone"]</small>
-        }
+    <div class="cart-head">
+        <h1>Корзина</h1>
     </div>
-    <button type="submit">Отправить код</button>
-</form>
+
+    <div class="cart-body">
+        <table class="cart-items-list-table">          
+            <tbody class="cart-items-list-table-body">
+                @foreach (var item in Model.OrderItems)
+                {
+                    <tr class="cart-items-list-item-container">
+                        <td class="cart-items-list-item-description">
+                            <div class="cart-item-description-block">
+                                <div class="cart-item-description-block-image">
+
+                                </div>
+                                <div class="cart-item-description-block-info">
+                                    <p>@item.Author</p>
+                                    <p>@item.Title</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cart-items-list-item-price">
+                            <p>@item.Price.ToString("C")</p>
+                        </td>
+                        <td class="cart-items-list-item-amount">
+                            <div class="cart-item-amount-block">
+                                <div class="cart-item-amount-block-buttonMinus">
+                                    <a type="button" href="@Url.Action(nameof(OrderController.PutAwayBook), new{ BookId = @item.BookId})"></a>
+                                </div>
+                                <div class="cart-item-amount-block-input">
+                                    <form action="@Url.Action(nameof(OrderController.UpdateOrderItem))" method="post">
+                                        <input type="hidden" name="bookId" value="@item.BookId" />
+                                        <input type="number" name="count" value="@item.Count" max="100" min="1" />                                                               
+                                    </form>
+                                </div>
+                                <div class="cart-item-amount-block-buttonPlus">
+                                    <a type="button" href="@Url.Action(nameof(OrderController.AddBook), new{ BookId = @item.BookId})"></a>
+                                </div>
+                            </div>                                                                                    
+                        </td>
+                        <td class="cart-items-list-item-totalPrice">
+                            <p>@Model.TotalPrice.ToString("C")</p>
+                        </td>
+                        <td class="cart-items-list-item-remove">
+                            <form action="@Url.Action(nameof(OrderController.RemoveOrderItem))" method="post">
+                                <input type="hidden" name="BookId" value="@item.BookId" />
+                                <button type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="cart-items-list-table-footer">
+            @if(Model.DeliveryPrice != null)
+            {
+            <tr class="cart-items-list-item-container">
+                <td>
+                    <p>Цена доставки:</p>
+                </td>
+                <td>
+                    <p>@Model.DeliveryPrice</p>
+                </td>
+            </tr>
+            }
+            <tr class="cart-items-list-item-container">               
+                <td>
+                    <div class="cart-item-block-totalPrice">
+                        <p>Итого:</p>
+                    </div>                  
+                </td>
+                <td>
+                    <div class="cart-item-block-totalPrice">
+                        <p>@Model.TotalPrice.ToString("C")</p>
+                    </div>                  
+                </td>          
+            </tr>
+            </tfoot>
+        </table>
+
+        <div class="cart-create-order-container">
+            <div class="cart-order-container-label">
+                <h2>Оформление заказа:</h2>
+            </div>
+            <div class="cart-order-container-confirmationPhone">
+                <h5>Подтвердите номер телефона</h5>
+                <form action="@Url.Action(nameof(OrderController.SendConfirmationCode))" method="post">
+                    <div>
+                        <label for="cellPhone">Мобильный телефон</label>
+                        <input type="text" name="cellPhone" placeholder="+79876543210" />
+                        @if (Model.Errors.ContainsKey("cellPhone"))
+                        {
+                            <small>@Model.Errors["cellPhone"]</small>
+                        }
+                    </div>
+                    <button type="submit">Отправить код</button>
+                </form>
+            </div>            
+        </div>       
+    </div>
+
+</div>
