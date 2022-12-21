@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Store.Contractors;
-using Store.Web.App;
+using Store.Web.App.Services;
 using Store.Web.Contractors;
 
 namespace Store.Web.Controllers
@@ -69,6 +69,9 @@ namespace Store.Web.Controllers
         public async Task<IActionResult> SendConfirmationCode(string cellPhone)
         {
             var orderModel = await _orderService.SendConfirmationAsync(cellPhone);
+
+            if (orderModel.Errors.ContainsKey("cellPhone"))
+                return View("Index", orderModel);
 
             return View("Confirmation", orderModel);
         }

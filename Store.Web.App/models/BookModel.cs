@@ -1,4 +1,4 @@
-﻿namespace Store.Web.App
+﻿namespace Store.Web.App.Models
 {
     public class BookModel
     {

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using PhoneNumbers;
 using Store.Messages;
+using Store.Web.App.Models;
 
-namespace Store.Web.App
+namespace Store.Web.App.Services
 {
     public class OrderService
     {
@@ -127,7 +128,7 @@ namespace Store.Web.App
                 await _notificationService.SendConfirmationCodeAsync(cellPhone, confirmationCode);
             }
             else
-                orderModel.Errors[cellPhone] = "Номер телефона не соответствует формату +79992457505";
+                orderModel.Errors["cellPhone"] = "Номер телефона не соответствует формату +79992457505";
 
             return orderModel;
 
