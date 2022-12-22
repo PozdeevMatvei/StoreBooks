@@ -18,7 +18,7 @@
     </div>
 
     <div class="card-container-footer">
-        <p>Цена: <strong>@Model.Price</strong></p>
+        <p>Цена: <strong>@Model.Price.ToString("C")</strong></p>
         <form method="post" action="@Url.Action(nameof(OrderController.AddOrderItem), "Order")" method="post">
             <input type="hidden" name="bookId" value="@Model.BookId"/>
             @if(Model.IsBookCart)

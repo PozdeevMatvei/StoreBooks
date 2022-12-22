@@ -37,8 +37,7 @@ namespace Store
         {
             public static OrderItemDto Create(OrderDto order, int bookId, decimal price, int count)
             {
-                if (order == null)
-                    throw new ArgumentNullException(nameof(order));
+                ArgumentNullException.ThrowIfNull(order);
 
                 ThrowIfInvalidCount(count);
 

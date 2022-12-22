@@ -33,26 +33,7 @@ namespace Store.Web.App
         public static void RemoveCart(this ISession session)
         {
             session.Remove(KeyCart);
-        }
-
-        //private static void SetString(this ISession session, string key, string value)
-        //{
-        //    session.Set(key, Encoding.UTF8.GetBytes(value));
-        //}
-        //private static string? GetString(this ISession session, string key)
-        //{
-        //    var data = session.Get(key);
-        //    if (data == null)
-        //    {
-        //        return null;
-        //    }
-        //    return Encoding.UTF8.GetString(data);
-        //}
-        //private static byte[]? Get(this ISession session, string key)
-        //{
-        //    session.TryGetValue(key, out var value);
-        //    return value;
-        //}
+        }       
 
     }
 }

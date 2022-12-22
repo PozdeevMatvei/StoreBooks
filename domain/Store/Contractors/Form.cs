@@ -38,8 +38,7 @@
         public static Form CreateNext(string serviceName, int step,
                                       IReadOnlyDictionary<string, string> parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            ArgumentNullException.ThrowIfNull(parameters);
 
             return new Form(serviceName, step, isFinal: false, parameters);
         }
@@ -47,8 +46,7 @@
         public static Form CreateLast(string serviceName, int step,
                                       IReadOnlyDictionary<string, string> parameters)
         {
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+            ArgumentNullException.ThrowIfNull(parameters);
 
             return new Form(serviceName, step, isFinal: true, parameters);
         }
