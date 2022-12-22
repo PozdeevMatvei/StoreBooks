@@ -57,9 +57,9 @@ namespace Store.DTO.EF
 
         public async Task<Book> GetByIdAsync(int id)
         {
-            var dbContext = _dbContextFactory.GetOrCreate(typeof(BookRepository));
+            var dbContext = _dbContextFactory.GetOrCreate(typeof(BookRepository));            
             var bookDto = await dbContext.Books.SingleAsync(book => book.Id == id);
-
+            
             return Book.Mapper.Map(bookDto);
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace Store.Web.App
+﻿using Store.Web.App.Models;
+
+namespace Store.Web.App.Services
 {
     public class BookService
     {

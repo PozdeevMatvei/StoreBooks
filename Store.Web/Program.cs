@@ -2,9 +2,10 @@ using Store;
 using Store.Contractors;
 using Store.DTO.EF;
 using Store.Messages;
-using Store.Web.App;
+using Store.Web.App.Middlewares;
 using Store.Web.Contractors;
 using Store.YandexKassa;
+using Store.Web.App.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -29,6 +30,8 @@ builder.Services.AddSingleton<BookService>();
 builder.Services.AddSingleton<OrderService>();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHendlingMiddleware>();
 app.UseStaticFiles();
 app.UseSession();
 
