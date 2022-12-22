@@ -1,4 +1,5 @@
 ﻿using Store.DTO;
+using System;
 
 namespace Store
 {
@@ -35,8 +36,7 @@ namespace Store
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(Delivery));
+                ArgumentNullException.ThrowIfNull(value);
 
                 _dto.DeliveryName = value.Name;
                 _dto.DeliveryDescription = value.Description;
@@ -59,8 +59,7 @@ namespace Store
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException(nameof(Payment));
+                ArgumentNullException.ThrowIfNull(value);
 
                 _dto.PaymentName = value.Name;
                 _dto.PaymentDescription = value.Description;
@@ -72,7 +71,9 @@ namespace Store
 
         public Order(OrderDto dto)
         {
-            _dto = dto ?? throw new ArgumentNullException(nameof(dto));
+            ArgumentNullException.ThrowIfNull(dto);
+
+            _dto = dto;
 
             Items = new OrderItemCollection(dto);
         }

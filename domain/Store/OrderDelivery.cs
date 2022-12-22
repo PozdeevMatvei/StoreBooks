@@ -16,8 +16,8 @@
                 throw new ArgumentException(nameof(name));
             if (string.IsNullOrWhiteSpace(description))
                 throw new ArgumentException(nameof(description));
-            if (parameters == null)
-                throw new ArgumentNullException(nameof(parameters));
+
+            ArgumentNullException.ThrowIfNull(parameters);
 
             Name = name;
             Description = description;

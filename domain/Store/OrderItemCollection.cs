@@ -10,8 +10,7 @@ namespace Store
 
         public OrderItemCollection(OrderDto orderDto)
         {
-            if (orderDto == null)
-                throw new ArgumentNullException(nameof(orderDto));
+            ArgumentNullException.ThrowIfNull(orderDto);
 
             _orderDto = orderDto;
             _items = orderDto.Items

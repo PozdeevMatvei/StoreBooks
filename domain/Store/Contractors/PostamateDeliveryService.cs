@@ -37,8 +37,7 @@
 
         public Form FirstForm(Order order)
         {
-            if (order == null)
-                throw new ArgumentNullException(nameof(order));
+            ArgumentNullException.ThrowIfNull(order);
 
             return Form.CreateFirst(Name)
                        .AddParameter("orderId", order.OrderId.ToString())
@@ -74,8 +73,7 @@
 
         public OrderDelivery GetDelivery(Form form)
         {
-            if (form == null)
-                throw new ArgumentNullException(nameof(form));
+            ArgumentNullException.ThrowIfNull(form);
 
             if (form.ServiceName != Name || !form.IsFinal)
                 throw new InvalidOperationException("invalid form.");

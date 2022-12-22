@@ -201,7 +201,7 @@ namespace Store.Web.App.Services
                                   {
                                       BookId = book.BookId,
                                       Title = book.Title,
-                                      Author = book.Author,
+                                      Author = book.Author ?? "",
                                       Count = item.Count,
                                       Price = book.Price
                                   };
