@@ -6,6 +6,14 @@ namespace Store
     public class Order
     {
         private readonly OrderDto _dto;
+        public Order(OrderDto dto)
+        {
+            ArgumentNullException.ThrowIfNull(dto);
+
+            _dto = dto;
+
+            Items = new OrderItemCollection(dto);
+        }
         public int OrderId => _dto.Id;
         public string? CellPhone
         {
@@ -69,14 +77,7 @@ namespace Store
             }
         }
 
-        public Order(OrderDto dto)
-        {
-            ArgumentNullException.ThrowIfNull(dto);
-
-            _dto = dto;
-
-            Items = new OrderItemCollection(dto);
-        }
+        
 
         public static class DtoFactory
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Store.DTO.EF
@@ -18,6 +19,6 @@ namespace Store.DTO.EF
             services.AddSingleton<StoreDbContextFactory>();
 
             return services;
-        }
+        }                
     }
 }

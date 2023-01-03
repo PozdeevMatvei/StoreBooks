@@ -6,6 +6,10 @@ namespace Store
     public class Book
     {
         private BookDto _dto;
+        public Book(BookDto dto)
+        {
+            _dto = dto;
+        }
         public int BookId => _dto.Id;
         public string Isbn
         {
@@ -51,10 +55,7 @@ namespace Store
             }
         }
 
-        public Book(BookDto dto)
-        {
-            _dto = dto;
-        }
+        
 
         public static class DtoFactory
         {
