@@ -23,6 +23,6 @@ namespace Store.Web.App.models
         public string Password { get; set; } = null!;
 
         [Required]
-        public PhoneNumber PhoneNumber { get; set; } = null!;
+        public string PhoneNumber { get; set; } = null!;
     }
 }

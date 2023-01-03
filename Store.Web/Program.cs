@@ -8,6 +8,7 @@ using Store.YandexKassa;
 using Store.Web.App.Services;
 using Store.Web.App;
 using System.Security.Claims;
+using Store.Web.App.services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +26,8 @@ builder.Services.AddEF(builder.Configuration.GetConnectionString("Store")!);
 builder.Services.AddIdentityOptions();
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "#";
-    options.AccessDeniedPath = "#"; //TODO add paths
+    options.LoginPath = "/Authorization/Index";
+    options.AccessDeniedPath = "/Home/Index"; //TODO add paths
 });
 builder.Services.AddAuthorization(options =>
 {
@@ -44,10 +45,12 @@ builder.Services.AddSingleton<IPaymentService, YandexKassaPaymentService>();
 builder.Services.AddSingleton<IWebContractorService, YandexKassaPaymentService>();
 builder.Services.AddSingleton<BookService>();
 builder.Services.AddSingleton<OrderService>();
+builder.Services.AddScoped<RegistrationService>(); //TODO ошибка связанная с singlton service 
+builder.Services.AddScoped<AuthorizationService>();
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionHendlingMiddleware>();
+//app.UseMiddleware<ExceptionHendlingMiddleware>();
 app.UseStaticFiles();
 app.UseSession();
 app.UseAuthentication();
