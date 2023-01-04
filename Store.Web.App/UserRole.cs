@@ -9,5 +9,9 @@ namespace Store.Web.App
 {
     public class UserRole : IdentityRole<Guid>
     {
+        public UserRole() : base()
+        { }
+        public UserRole(string roleName) : base(roleName)
+        { }
     }
 }

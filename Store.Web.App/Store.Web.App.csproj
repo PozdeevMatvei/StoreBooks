@@ -17,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\domain\Store\Store.csproj" />
-    <ProjectReference Include="..\infrastructure\Store.Data.EF\Store.DTO.EF.csproj" />
   </ItemGroup>
 
 </Project>

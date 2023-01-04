@@ -27,7 +27,7 @@ builder.Services.AddIdentityOptions();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Authorization/Index";
-    options.AccessDeniedPath = "/Home/Index"; //TODO add paths
+    options.AccessDeniedPath = "/Home/Index"; 
 });
 builder.Services.AddAuthorization(options =>
 {
@@ -36,6 +36,7 @@ builder.Services.AddAuthorization(options =>
         builder.RequireClaim(ClaimTypes.Role, "user");
     });
 });
+
 builder.Services.AddSingleton<IBookRepository, BookRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
@@ -45,7 +46,7 @@ builder.Services.AddSingleton<IPaymentService, YandexKassaPaymentService>();
 builder.Services.AddSingleton<IWebContractorService, YandexKassaPaymentService>();
 builder.Services.AddSingleton<BookService>();
 builder.Services.AddSingleton<OrderService>();
-builder.Services.AddScoped<RegistrationService>(); //TODO ошибка связанная с singlton service 
+builder.Services.AddScoped<RegistrationService>(); 
 builder.Services.AddScoped<AuthorizationService>();
 
 var app = builder.Build();

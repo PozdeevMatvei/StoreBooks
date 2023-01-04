@@ -19,6 +19,7 @@ namespace Store.Web.App.services
         public async Task<bool> RegistrationAsync(UserModel userModel)
         {
             var user = new User();
+            user.UserName = userModel.Email;
             user.Email = userModel.Email;
             user.FirstName = userModel.FirstName;
             user.LastName = userModel.LastName;

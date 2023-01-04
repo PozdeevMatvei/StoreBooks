@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.Contractors;
 using Store.Web.App.Services;
 using Store.Web.Contractors;
@@ -23,6 +24,7 @@ namespace Store.Web.Controllers
             _webContractorServices = webContractorServices;
         }
 
+        [Authorize(Policy = "user")]
         public async Task<IActionResult> Index()
         {
             var (isGetModel, orderModel) = await _orderService.TryGetModelAsync();
