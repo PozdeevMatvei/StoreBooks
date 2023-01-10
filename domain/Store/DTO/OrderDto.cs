@@ -18,5 +18,6 @@
         public Dictionary<string, string>? PaymentParameters { get; set; }
 
         public IList<OrderItemDto> Items { get; set; } = new List<OrderItemDto>();
+        public Guid? UserId { get; set; }
     }
 }

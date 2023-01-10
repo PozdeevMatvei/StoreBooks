@@ -40,22 +40,24 @@
                     <ul class="header-nav-list">
                         <li>
                             <a asp-controller="Home" asp-action="Index">Home</a>
-                        </li>                       
+                        </li>   
+                        <li>
+                            <a asp-controller="Registration" asp-action="Index">Registration</a>
+                        </li>
+                        <li>
+                            <a asp-controller="Authorization" asp-action="Index">Authorization</a>
+                        </li>
                     </ul>
                     
                 </nav>
             </div>
         </div> 
-      
-        @*<div class="nav-bar left">
-            <p>ads</p>
-        </div>*@
+             
         <div class="body-container-content">
             @RenderBody()
         </div>
     </div>
 
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-    @*<script type="text/javascript" src="~/js/JavaScript.js"></script>*@
 </body>
 </html>

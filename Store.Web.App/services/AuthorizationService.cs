@@ -18,7 +18,7 @@ namespace Store.Web.App.services
             _signInManager = signInManager;
         }
 
-        public async Task<bool> AuthorizationAsync(AuthorizationModel loginModel)
+        public async Task<bool> LogInAsync(AuthorizationModel loginModel)
         {
             var user = await _userManager.FindByEmailAsync(loginModel.Email);
             if(user == null)
@@ -31,7 +31,10 @@ namespace Store.Web.App.services
                 return true;
 
             return false;
-            // TODO сделать контроллеры и представления по регистрации, авторизации
+        }
+        public async Task LogOutAsync()
+        {
+            await _signInManager.SignOutAsync();
         }
     }
 }

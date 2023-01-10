@@ -39,6 +39,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddSingleton<IBookRepository, BookRepository>();
 builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
 builder.Services.AddSingleton<IDeliveryService, PostamateDeliveryService>();
 builder.Services.AddSingleton<IPaymentService, CashPaymentService>();
 builder.Services.AddSingleton<INotificationService, DebugNotificationService>();
@@ -48,6 +49,7 @@ builder.Services.AddSingleton<BookService>();
 builder.Services.AddSingleton<OrderService>();
 builder.Services.AddScoped<RegistrationService>(); 
 builder.Services.AddScoped<AuthorizationService>();
+builder.Services.AddSingleton<UserService>();
 
 var app = builder.Build();
 
@@ -61,3 +63,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+//TODO ѕроверить работоспособность регистрации на ошибки, сделать ссылки на регистрацию и автоизацию
+//TODO ѕоправить вид страниц авторизации 
+//TODO —делать возможность оформлени€ заказа без заполнени€ полей пользовател€ если авторизован

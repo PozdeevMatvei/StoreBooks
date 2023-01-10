@@ -22,7 +22,7 @@ namespace Store.Web.Controllers
         {
             if(ModelState.IsValid)
             {
-                var isSuccess = await _authorizationService.AuthorizationAsync(user);
+                var isSuccess = await _authorizationService.LogInAsync(user);
                 if (isSuccess)
                     return Redirect("/Home/Index");
             }

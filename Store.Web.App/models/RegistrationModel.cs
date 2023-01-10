@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Store.Web.App.models
 {
-    public class UserModel
+    public class RegistrationModel
     {
         [Required]
         public string FirstName { get; set; } = null!;

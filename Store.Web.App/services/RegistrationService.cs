@@ -16,7 +16,7 @@ namespace Store.Web.App.services
         {
             _userManager = userManager;
         }
-        public async Task<bool> RegistrationAsync(UserModel userModel)
+        public async Task<bool> RegistrationAsync(RegistrationModel userModel)
         {
             var user = new User();
             user.UserName = userModel.Email;

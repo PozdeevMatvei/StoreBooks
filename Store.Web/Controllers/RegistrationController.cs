@@ -19,7 +19,7 @@ namespace Store.Web.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Index(UserModel user)
+        public async Task<IActionResult> Index(RegistrationModel user)
         {
             if(ModelState.IsValid)
             {

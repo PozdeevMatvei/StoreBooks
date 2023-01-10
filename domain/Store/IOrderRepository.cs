@@ -4,6 +4,6 @@
     {
         Task<Order> CreateAsync();
         Task<Order> GetByIdAsync(int orderId);
-        Task UpdateAsync(Order order);
+        Task UpdateAsync();
     }
 }
