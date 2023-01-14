@@ -19,20 +19,22 @@
                     </label>
                 </form>
                
-                <a class="cart" href="@Url.Action("Index", "Order")">
-                    <div class="cart-count">
+                <a class="cart-icon" href="@Url.Action("Index", "Order")">
+                    <div class="cart-count-icon">
                         @{
                             if(Context.Session.TryGetCart(out Cart? cart))
                             {
-                                <span class="count">@cart!.TotalCount</span>
+                                <span class="count-icon">@cart!.TotalCount</span>
                             }
                             else
                             {
-                                <span class="count">0</span>
+                                <span class="count-icon">0</span>
                             }
                         }
                             
                     </div>
+                </a>
+                <a class="user-icon" href="@Url.Action("Index", "Account")">                   
                 </a>
             </div>
             <div class="header-links">               

@@ -13,7 +13,7 @@ namespace Store.Web.App
     {
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
-        public IList<OrderDto>? Orders { get; set; } = new List<OrderDto>();
+        public IList<OrderDto> Orders { get; set; } = new List<OrderDto>();
         //TODO create UserDto
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Store.DTO;
+using Store.Web.App.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,15 @@ namespace Store.Web.App.services
             _userRepository = userRepository;
         }
 
+        public async Task<(bool isGetUserModel, UserModel? model)> TryGetUserModelAsync()
+        {
+            var (isGetUser, user) = await TryGetUserAsync();
+
+            if (isGetUser)
+                return (true, Map(user!));
+
+            return (false, null);
+        }
         public async Task<(bool isGetUser, User? user)> TryGetUserAsync()
         {
             var (isAuthorization, userName) = TryGetAuthorizationUserName();
@@ -30,14 +40,13 @@ namespace Store.Web.App.services
         }
         public async Task AddOrderAsync(OrderDto order)
         {
-            var (isAuthorization, userName) = TryGetAuthorizationUserName();
+            var (isGetUser, user) = await TryGetUserAsync();
 
-            if (!isAuthorization)
-                return;
-
-            User user = await _userRepository.GetUserAsync(userName!);
-            user.Orders.Add(order); 
-            await _userRepository.UpdateAsync();
+            if (isGetUser)
+            {
+                user!.Orders.Add(order);
+                await _userRepository.UpdateAsync();
+            }
         }
         public async Task<bool> IsAuthorization()
         {
@@ -54,6 +63,20 @@ namespace Store.Web.App.services
                 return (true, userName);
 
             return (false, null);
+        }
+
+        private UserModel Map(User user)
+        {
+            ArgumentNullException.ThrowIfNull(user);
+
+            var model = new UserModel();
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;
+            model.Email = user.Email;
+            model.PhoneNumber = user.PhoneNumber;
+            model.Orders = user.Orders;
+
+            return model;
         }
     }
 }

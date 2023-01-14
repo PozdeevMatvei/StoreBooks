@@ -22,6 +22,7 @@ namespace Store.DTO.EF
             var dbContext = _dbContextFactory.GetOrCreate(typeof(UserRepository));          
             var user = await dbContext.Users
                                       .Include(user => user.Orders)
+                                      .ThenInclude(order => order.Items)
                                       .SingleAsync(user => user.UserName == userName);
             return user;
         }

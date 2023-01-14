@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.Web.App.services;
 
 namespace Store.Web.Controllers
 {
+    [Authorize(Policy = "user")]
     public class AccountController : Controller
     {
         private readonly UserService _userService;
@@ -10,10 +12,11 @@ namespace Store.Web.Controllers
         {
             _userService = userService;
         }
-
-        public IActionResult Index()
-        {           
-            return View();
+        
+        public async Task<IActionResult> Index()
+        {
+            var userModel = await _userService.TryGetUserModelAsync();
+            return View(userModel.model);
         }
     }
 }

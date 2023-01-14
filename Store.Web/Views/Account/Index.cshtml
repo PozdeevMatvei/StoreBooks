@@ -1,1 +1,56 @@
-﻿<h2>Account</h2>
+﻿@using Store.Web.App.models
+@model UserModel
+
+@{
+    ViewData["Title"] = "Account";
+}
+<div class="my-account">
+    <h2>Личный кабинет</h2>
+    <div class="my-account-mix-message">
+        <div class="line-container">
+            <p>Здравствуйте, <strong>@Model.FirstName</strong></p>
+        </div>
+    </div>
+    <div class="my-account-columns-blocks">
+        <div class="column-blocks">
+
+            <div class="column-block">
+                <div class="column-block-header">
+                    <h5>Заказы</h5>
+                </div>
+                <div class="column-block-content">
+                    @if (Model.Orders?.Count > 0)
+                    {
+                        @foreach (var order in Model.Orders)
+                        {
+                            <div class="line-container">
+                                <p>№@order.Id</p>
+                                <p id="total-price">@order.TotalPrice.ToString("C")</p>
+                            </div>
+                        }
+                    }
+                </div>             
+            </div>
+
+            <div class="column-block">
+                <div class="column-block-header">
+                    <h5>Личные данные</h5>
+                </div>
+                <div class="column-block-content">
+                    <div class="line-container">
+                        <p>@Model.FirstName @Model.LastName</p>                       
+                    </div>
+                    <div class="line-container">
+                        <p>@Model.Email</p>
+                    </div>
+                    <div class="line-container">
+                        <p>@Model.PhoneNumber</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>       
+    </div>
+    
+
+</div>

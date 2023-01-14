@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store.Contractors;
+using Store.Web.App.Models;
 using Store.Web.App.services;
 using Store.Web.App.Services;
 using Store.Web.Contractors;
@@ -28,7 +29,6 @@ namespace Store.Web.Controllers
             _webContractorServices = webContractorServices;
         }
 
-        [Authorize(Policy = "user")]
         public async Task<IActionResult> Index()
         {
             var (isGetModel, orderModel) = await _orderService.TryGetModelAsync();
@@ -58,13 +58,14 @@ namespace Store.Web.Controllers
 
             return RedirectToAction(nameof(OrderController.Index));
         }
-
+        [HttpPost]
         public async Task<IActionResult> AddBook(int bookId)
         {
             await _orderService.AddBookAsync(bookId);
 
             return RedirectToAction(nameof(OrderController.Index));
         }
+        [HttpPost]
         public async Task<IActionResult> PutAwayBook(int bookId)
         {
             await _orderService.PutAwayBookAsync(bookId);
@@ -163,20 +164,24 @@ namespace Store.Web.Controllers
             var payment = paymentService.GetPayment(form);
             var orderModel = await _orderService.SetPaymentAsync(payment);
 
+            await Finish(orderModel);
+
+            return View("Finish", orderModel);
+        }
+
+        private async Task Finish(OrderModel orderModel)
+        {
+            var order = await _orderService.GetOrderAsync();
+            var orderDto = Order.Mapper.Map(order);
+            orderDto.TotalCount = order.TotalCount;
+            orderDto.TotalPrice = order.TotalPrice;
             if (await _userService.IsAuthorization())
             {
-                var order = await _orderService.GetOrderAsync();
-                var orderDto = Order.Mapper.Map(order);
                 await _userService.AddOrderAsync(orderDto);
             }
 
             _orderService.RemoveOrderSession();
-
-            return View("Finish", orderModel);
-            //TODO добавление заказа пользователю
         }
-
-
         private Uri GetReturnUri(string action)
         {
             var builder = new UriBuilder(Request.Scheme, Request.Host.Host)

@@ -14,8 +14,11 @@ namespace Store.DTO.EF
 
         public StoreDbContext GetOrCreate(Type repositoryType)
         {
-            var services = _httpContextAccessor.HttpContext?.RequestServices; //TODO null exception
-            var dbContexts = services?.GetService<Dictionary<Type, StoreDbContext>>();
+            var services = _httpContextAccessor.HttpContext.RequestServices;
+            var dbContexts = services.GetService<Dictionary<Type, StoreDbContext>>();
+
+            ArgumentNullException.ThrowIfNull(dbContexts);
+
             if (!dbContexts!.ContainsKey(repositoryType))
                 dbContexts[repositoryType] = services.GetService<StoreDbContext>()!;
 

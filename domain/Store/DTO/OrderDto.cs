@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string? CellPhone { get; set; }
-        public int TotalCount { get; set; }
+        public int TotalCount { get; set; } 
         public decimal TotalPrice { get; set; }
 
         public string? DeliveryName { get; set; }
@@ -19,5 +19,6 @@
 
         public IList<OrderItemDto> Items { get; set; } = new List<OrderItemDto>();
         public Guid? UserId { get; set; }
+        
     }
 }

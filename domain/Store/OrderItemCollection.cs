@@ -77,6 +77,7 @@ namespace Store
                 throw new InvalidOperationException("Can not remove this book. Her not exists in the order.");
 
             _orderDto.Items.RemoveAt(index);
+            
             _items.RemoveAt(index);
         }
 
