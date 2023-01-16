@@ -12,7 +12,6 @@ namespace Store.Web.Controllers
         {
             _authorizationService = authorizationService;
         }
-
         [HttpGet]
         public IActionResult LogIn()
         {
