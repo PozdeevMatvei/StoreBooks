@@ -1,0 +1,13 @@
+﻿
+<div class="user">
+    <a class="user-icon dropbtn" href="@Url.Action(nameof(AccountController.Index), "Account")">
+    </a>
+    <div class="user-content">
+        <div>
+            <a href="@Url.Action(nameof(AccountController.Index), "Account")">Личный кабинет</a>
+        </div>
+        <div>
+            <a href="@Url.Action(nameof(AuthorizationController.LogOut), "Authorization")">Выйти</a>
+        </div>
+    </div>
+</div>

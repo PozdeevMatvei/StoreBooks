@@ -1,0 +1,32 @@
+﻿@using Store.Web.App.models
+
+@model RegistrationModel
+
+@{
+    ViewData["Title"] = "регистрация";
+}
+
+<div>
+    <h3>Регистрация</h3>
+    <form class="column-container" asp-controller="Registration" 
+          asp-action="@nameof(RegistrationController.Index)"
+          method="post"
+    >
+        <label asp-for="@Model.FirstName">Имя</label>
+        <input asp-for="@Model.FirstName" />
+
+        <label asp-for="@Model.LastName">Фамилия</label>
+        <input asp-for="@Model.LastName" />
+
+        <label asp-for="@Model.PhoneNumber">Телефон</label>
+        <input asp-for="@Model.PhoneNumber" />
+
+        <label asp-for="@Model.Email">Email</label>
+        <input asp-for="@Model.Email" />
+
+        <label asp-for="@Model.Password">Пароль</label>
+        <input asp-for="@Model.Password" />
+
+        <button class="mt-1" type="submit">Регистрация</button>
+    </form>
+</div>

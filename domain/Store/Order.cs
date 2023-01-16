@@ -6,6 +6,14 @@ namespace Store
     public class Order
     {
         private readonly OrderDto _dto;
+        public Order(OrderDto dto)
+        {
+            ArgumentNullException.ThrowIfNull(dto);
+
+            _dto = dto;
+
+            Items = new OrderItemCollection(dto);
+        }
         public int OrderId => _dto.Id;
         public string? CellPhone
         {
@@ -18,9 +26,10 @@ namespace Store
                 _dto.CellPhone = value;
             }
         }
-        public int TotalCount => Items.Sum(item => item.Count);
+        public int TotalCount => Items.Sum(item => item.Count);  
         public decimal TotalPrice => Items.Sum(item => item.Price * item.Count)
                                                           + (Delivery?.Price ?? 0m);
+        public Guid? UserId => _dto.UserId;
         public OrderItemCollection Items { get; }
         public OrderDelivery? Delivery
         {
@@ -69,15 +78,7 @@ namespace Store
             }
         }
 
-        public Order(OrderDto dto)
-        {
-            ArgumentNullException.ThrowIfNull(dto);
-
-            _dto = dto;
-
-            Items = new OrderItemCollection(dto);
-        }
-
+        
         public static class DtoFactory
         {
             public static OrderDto Create() => new();

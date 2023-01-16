@@ -1,0 +1,23 @@
+﻿@using Store.Web.App.models
+
+@model AuthorizationModel
+
+@{
+    ViewData["Title"] = "авторизация";
+}
+
+<div>
+    <h3>Авторизация</h3>
+    <form class="column-container" asp-controller="Authorization"
+          asp-action="@nameof(AuthorizationController.LogIn)"
+          method="post"
+    >
+        <label asp-for="@Model.Email">Email</label>
+        <input asp-for="@Model.Email" />
+
+        <label asp-for="@Model.Password">Пароль</label>
+        <input asp-for="@Model.Password" type="password"/>
+
+        <button class="mt-1" type="submit">Войти</button>
+    </form>
+</div>

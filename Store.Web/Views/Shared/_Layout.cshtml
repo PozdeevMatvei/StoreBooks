@@ -19,43 +19,51 @@
                     </label>
                 </form>
                
-                <a class="cart" href="@Url.Action("Index", "Order")">
-                    <div class="cart-count">
+                <a class="cart-icon" href="@Url.Action(nameof(OrderController.Index), "Order")">
+                    <div class="cart-count-icon">
                         @{
                             if(Context.Session.TryGetCart(out Cart? cart))
                             {
-                                <span class="count">@cart!.TotalCount</span>
+                                        <span class="count-icon">@cart!.TotalCount</span>
                             }
                             else
                             {
-                                <span class="count">0</span>
+                                        <span class="count-icon">0</span>
                             }
                         }
-                            
+
                     </div>
                 </a>
+                @{
+                    if (Context.User.Identity.IsAuthenticated)
+                        await Html.RenderPartialAsync("/Views/Partials/Account/AuthorizationPanel.cshtml");
+                    else
+                        await Html.RenderPartialAsync("/Views/Partials/Account/NotAuthorizationPanel.cshtml");
+                }               
             </div>
             <div class="header-links">               
                 <nav>
                     <ul class="header-nav-list">
                         <li>
                             <a asp-controller="Home" asp-action="Index">Home</a>
-                        </li>                       
+                        </li>
+                        @if (!Context.User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                <a asp-controller="Registration" asp-action="Index">Registration</a>
+                            </li>                            
+                        }
                     </ul>
                     
                 </nav>
             </div>
         </div> 
-      
-        @*<div class="nav-bar left">
-            <p>ads</p>
-        </div>*@
+             
         <div class="body-container-content">
             @RenderBody()
         </div>
     </div>
 
     <script type="text/javascript" src="js/bootstrap.bundle.min.js"></script>
-    @*<script type="text/javascript" src="~/js/JavaScript.js"></script>*@
 </body>
 </html>

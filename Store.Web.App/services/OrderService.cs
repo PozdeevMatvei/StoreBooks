@@ -52,7 +52,7 @@ namespace Store.Web.App.Services
             var book = await _bookRepository.GetByIdAsync(bookId);
             order!.Items.Add(book.BookId, book.Price, count);
 
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync();
             UpdateSession(order!);
 
             return await MapAsync(order!);
@@ -65,7 +65,7 @@ namespace Store.Web.App.Services
             var order = await GetOrderAsync();
             order.Items.Get(bookId).Count = count;
 
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync();
             UpdateSession(order);
 
             return await MapAsync(order);
@@ -75,7 +75,7 @@ namespace Store.Web.App.Services
             var order = await GetOrderAsync();
             order.Items.Remove(bookId);
 
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync();
             UpdateSession(order);
 
             return await MapAsync(order);
@@ -88,7 +88,7 @@ namespace Store.Web.App.Services
             if (item.Count < 100)
                 item.Count += 1;
 
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync();
             UpdateSession(order);
 
             return await MapAsync(order);
@@ -101,7 +101,7 @@ namespace Store.Web.App.Services
             if (item.Count > 1)
                 item.Count -= 1;
 
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync();
             UpdateSession(order);
 
             return await MapAsync(order);
@@ -154,7 +154,7 @@ namespace Store.Web.App.Services
 
             var order = await GetOrderAsync();
             order.CellPhone = cellPhone;
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync();
 
             Session.Remove(cellPhone);
 
@@ -164,7 +164,7 @@ namespace Store.Web.App.Services
         {
             var order = await GetOrderAsync();
             order.Delivery = delivery;
-            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.UpdateAsync();
 
             return await MapAsync(order);
         }
@@ -173,16 +173,22 @@ namespace Store.Web.App.Services
             var order = await GetOrderAsync();
             order.Payment = payment;
 
-            await _orderRepository.UpdateAsync(order);
-            Session.RemoveCart();
+            await _orderRepository.UpdateAsync();
             await _notificationService.StartProcessAsync(order);
-
             return await MapAsync(order);
         }
-
+        public void RemoveOrderSession()
+        {
+            Session.RemoveCart();            
+        }
 
         internal async Task<(bool isGetOrder, Order? order)> TryGetOrderAsync()
         {
+            if(1 > 2)
+            {
+                //TODO реализовать корзину из бд
+            }
+
             if (Session.TryGetCart(out Cart? cart))
             {
                 var order = await _orderRepository.GetByIdAsync(cart!.OrderId);

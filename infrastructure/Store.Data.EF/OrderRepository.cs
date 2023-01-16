@@ -31,7 +31,7 @@ namespace Store.DTO.EF
             return Order.Mapper.Map(orderDto);
         }
 
-        public async Task UpdateAsync(Order order)
+        public async Task UpdateAsync()
         {
             var dbContext = _dbContextFactory.GetOrCreate(typeof(OrderRepository));
             await dbContext.SaveChangesAsync();

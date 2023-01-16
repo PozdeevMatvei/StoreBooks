@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.Contractors;
+using Store.Web.App.Models;
+using Store.Web.App.services;
 using Store.Web.App.Services;
 using Store.Web.Contractors;
 
@@ -8,16 +11,19 @@ namespace Store.Web.Controllers
     public class OrderController : Controller
     {
         private readonly OrderService _orderService;
+        private readonly UserService _userService;
         private readonly IEnumerable<IDeliveryService> _deliveryServices;
         private readonly IEnumerable<IPaymentService> _paymentServices;
         private readonly IEnumerable<IWebContractorService> _webContractorServices;
 
         public OrderController(OrderService orderService,
+                               UserService userService,    
                                IEnumerable<IDeliveryService> deliveryServices,
                                IEnumerable<IPaymentService> paymentServices,
                                IEnumerable<IWebContractorService> webContractorServices)
         {
             _orderService = orderService;
+            _userService = userService;
             _deliveryServices = deliveryServices;
             _paymentServices = paymentServices;
             _webContractorServices = webContractorServices;
@@ -52,13 +58,14 @@ namespace Store.Web.Controllers
 
             return RedirectToAction(nameof(OrderController.Index));
         }
-
+        [HttpPost]
         public async Task<IActionResult> AddBook(int bookId)
         {
             await _orderService.AddBookAsync(bookId);
 
             return RedirectToAction(nameof(OrderController.Index));
         }
+        [HttpPost]
         public async Task<IActionResult> PutAwayBook(int bookId)
         {
             await _orderService.PutAwayBookAsync(bookId);
@@ -157,10 +164,24 @@ namespace Store.Web.Controllers
             var payment = paymentService.GetPayment(form);
             var orderModel = await _orderService.SetPaymentAsync(payment);
 
+            await Finish(orderModel);
+
             return View("Finish", orderModel);
         }
 
+        private async Task Finish(OrderModel orderModel)
+        {
+            var order = await _orderService.GetOrderAsync();
+            var orderDto = Order.Mapper.Map(order);
+            orderDto.TotalCount = order.TotalCount;
+            orderDto.TotalPrice = order.TotalPrice;
+            if (await _userService.IsAuthorization())
+            {
+                await _userService.AddOrderAsync(orderDto);
+            }
 
+            _orderService.RemoveOrderSession();
+        }
         private Uri GetReturnUri(string action)
         {
             var builder = new UriBuilder(Request.Scheme, Request.Host.Host)

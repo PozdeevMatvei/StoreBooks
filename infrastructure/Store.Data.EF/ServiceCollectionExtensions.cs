@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Store.Web.App;
 
 namespace Store.DTO.EF
 {
@@ -17,6 +19,18 @@ namespace Store.DTO.EF
             services.AddScoped<Dictionary<Type, StoreDbContext>>();
             services.AddSingleton<StoreDbContextFactory>();
 
+            return services;
+        }
+
+        public static IServiceCollection AddIdentityOptions(this IServiceCollection services)
+        {
+            services.AddIdentity<User, UserRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 4;
+            }).AddEntityFrameworkStores<StoreDbContext>();
             return services;
         }
     }

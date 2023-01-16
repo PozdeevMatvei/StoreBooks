@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Store.Web.App;
 
 namespace Store.DTO.EF
 {
-    public class StoreDbContext : DbContext
+    public class StoreDbContext : IdentityDbContext<User, UserRole, Guid>
     {
         public DbSet<BookDto> Books { get; set; }
         public DbSet<OrderDto> Orders { get; set; }
@@ -14,6 +16,7 @@ namespace Store.DTO.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             BuildBooks(modelBuilder);
             BuildOrderItems(modelBuilder);
             BuildOrders(modelBuilder);
