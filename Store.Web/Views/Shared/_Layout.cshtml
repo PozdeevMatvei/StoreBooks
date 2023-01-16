@@ -19,7 +19,7 @@
                     </label>
                 </form>
                
-                <a class="cart-icon" href="@Url.Action("Index", "Order")">
+                <a class="cart-icon" href="@Url.Action(nameof(OrderController.Index), "Order")">
                     <div class="cart-count-icon">
                         @{
                             if(Context.Session.TryGetCart(out Cart? cart))
@@ -31,11 +31,15 @@
                                 <span class="count-icon">0</span>
                             }
                         }
-                            
+
                     </div>
                 </a>
-                <a class="user-icon" href="@Url.Action("Index", "Account")">                   
-                </a>
+                @{
+                    if (Context.User.Identity.IsAuthenticated)
+                        await Html.RenderPartialAsync("/Views/Partials/Account/AuthorizationPanel.cshtml");
+                    else
+                        await Html.RenderPartialAsync("/Views/Partials/Account/NotAuthorizationPanel.cshtml");
+                }               
             </div>
             <div class="header-links">               
                 <nav>
@@ -47,7 +51,7 @@
                             <a asp-controller="Registration" asp-action="Index">Registration</a>
                         </li>
                         <li>
-                            <a asp-controller="Authorization" asp-action="Index">Authorization</a>
+                            <a asp-controller="Authorization" asp-action="LogIn">Authorization</a>
                         </li>
                     </ul>
                     

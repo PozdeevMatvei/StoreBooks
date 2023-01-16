@@ -9,6 +9,8 @@ using Store.Web.App.Services;
 using Store.Web.App;
 using System.Security.Claims;
 using Store.Web.App.services;
+using System.Net;
+using Store.Web.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,8 +28,8 @@ builder.Services.AddEF(builder.Configuration.GetConnectionString("Store")!);
 builder.Services.AddIdentityOptions();
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Authorization/Index";
-    options.AccessDeniedPath = "/Home/Index"; 
+    options.LoginPath = $"/Authorization/{nameof(AuthorizationController.LogIn)}";
+    options.AccessDeniedPath = $"/Home/{nameof(HomeController.Index)}"; 
 });
 builder.Services.AddAuthorization(options =>
 {
@@ -63,7 +65,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-//TODO ƒобавить страницу пользовател€
-//TODO ѕроверить работоспособность регистрации на ошибки
-//TODO ѕоправить вид страниц авторизации 
-//TODO —делать возможность оформлени€ заказа без заполнени€ полей пользовател€ если авторизован

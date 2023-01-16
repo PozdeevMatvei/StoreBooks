@@ -8,8 +8,8 @@
 
 <div>
     <h3>Авторизация</h3>
-    <form asp-controller="Authorization"
-          asp-action="@nameof(AuthorizationController.Index)"
+    <form class="column-container" asp-controller="Authorization"
+          asp-action="@nameof(AuthorizationController.LogIn)"
           method="post"
     >
         <label asp-for="@Model.Email">Email</label>
@@ -18,6 +18,6 @@
         <label asp-for="@Model.Password">Пароль</label>
         <input asp-for="@Model.Password" type="password"/>
 
-        <button type="submit">Войти</button>
+        <button class="mt-1" type="submit">Войти</button>
     </form>
 </div>

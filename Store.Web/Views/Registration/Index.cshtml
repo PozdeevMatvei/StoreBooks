@@ -8,7 +8,7 @@
 
 <div>
     <h3>Регистрация</h3>
-    <form asp-controller="Registration" 
+    <form class="column-container" asp-controller="Registration" 
           asp-action="@nameof(RegistrationController.Index)"
           method="post"
     >
@@ -27,6 +27,6 @@
         <label asp-for="@Model.Password">Пароль</label>
         <input asp-for="@Model.Password" />
 
-        <button type="submit">Регистрация</button>
+        <button class="mt-1" type="submit">Регистрация</button>
     </form>
 </div>

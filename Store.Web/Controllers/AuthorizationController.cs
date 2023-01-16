@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Store.Web.App.models;
 using Store.Web.App.services;
 
@@ -13,12 +14,12 @@ namespace Store.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult LogIn()
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Index(AuthorizationModel user)
+        public async Task<IActionResult> LogIn(AuthorizationModel user)
         {
             if(ModelState.IsValid)
             {
@@ -27,6 +28,12 @@ namespace Store.Web.Controllers
                     return Redirect("/Home/Index");
             }
             return View(user);
+        }
+        [Authorize(Policy = "user")]
+        public async Task<IActionResult> LogOut()
+        {
+            await _authorizationService.LogOutAsync();
+            return Redirect("/Home/Index");
         }
     }
 }
