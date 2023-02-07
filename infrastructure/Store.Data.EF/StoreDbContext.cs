@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Store.Web.App;
@@ -23,19 +24,19 @@ namespace Store.DTO.EF
         }
         private static void BuildBooks(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<BookDto>(action =>
-            {
-                action.Property(dto => dto.Isbn)
+            modelBuilder.Entity<BookDto>(entityBuilder =>
+            {               
+                entityBuilder.Property(dto => dto.Isbn)
                       .HasMaxLength(17)
                       .IsRequired();
 
-                action.Property(dto => dto.Title)
+                entityBuilder.Property(dto => dto.Title)
                       .IsRequired();
 
-                action.Property(dto => dto.Price)
+                entityBuilder.Property(dto => dto.Price)
                       .HasColumnType("money");
 
-                action.HasData
+                entityBuilder.HasData
                 (
                     new BookDto
                     {
@@ -82,19 +83,39 @@ namespace Store.DTO.EF
         }
         private static void BuildOrders(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OrderDto>(action =>
+            modelBuilder.Entity<OrderDto>(entityBuilder =>
             {
-                action.Property(dto => dto.CellPhone)
-                      .HasMaxLength(17);
-                action.Property(dto => dto.DeliveryPrice)
-                      .HasColumnType("money");
+                entityBuilder.ToTable("Orders")                
+                .SplitToTable("ConfirmatedOrders", tableBuilder =>
+                {
+                    tableBuilder.Property(order => order.Id).HasColumnName("OrderId");
+                    tableBuilder.Property(order => order.IsConfirmatedOrder).HasColumnName("Confirmated");
+                })
+                .SplitToTable("Payments", tableBuilder =>
+                {
+                    tableBuilder.Property(order => order.Id).HasColumnName("OrderId");
+                    tableBuilder.Property(order => order.PaymentName);
+                    tableBuilder.Property(order => order.PaymentDescription);
+                    tableBuilder.Property(order => order.IsCompletePaymentOrder);
+                })
+                .SplitToTable("Deliveries", tableBuilder =>
+                {
+                    tableBuilder.Property(order => order.Id).HasColumnName("OrderId");
+                    tableBuilder.Property(order => order.DeliveryName);
+                    tableBuilder.Property(order => order.DeliveryDescription);
+                    tableBuilder.Property(order => order.DeliveryPrice);
+                });
 
-                action.Property(dto => dto.DeliveryParameters)
+                entityBuilder.Property(dto => dto.CellPhone).HasMaxLength(17);
+                entityBuilder.Property(dto => dto.TotalPrice).HasColumnType("money");
+                entityBuilder.Property(dto => dto.DeliveryPrice).HasColumnType("money");
+
+                entityBuilder.Property(dto => dto.DeliveryParameters)
                       .HasConversion(
                         value => JsonConvert.SerializeObject(value),
                         value => JsonConvert.DeserializeObject<Dictionary<string, string>>(value));
 
-                action.Property(dto => dto.PaymentParameters)
+                entityBuilder.Property(dto => dto.PaymentParameters)
                       .HasConversion(
                         value => JsonConvert.SerializeObject(value),
                         value => JsonConvert.DeserializeObject<Dictionary<string, string>>(value));

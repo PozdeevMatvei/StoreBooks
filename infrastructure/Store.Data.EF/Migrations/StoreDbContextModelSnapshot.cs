@@ -212,6 +212,9 @@ namespace Store.DTO.EF.Migrations
                     b.Property<string>("IsCompletePaymentOrder")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsConfirmatedOrder")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PaymentDescription")
                         .HasColumnType("nvarchar(max)");
 
@@ -225,7 +228,7 @@ namespace Store.DTO.EF.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("money");
 
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -234,7 +237,40 @@ namespace Store.DTO.EF.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
+
+                    b.SplitToTable("ConfirmatedOrders", null, t =>
+                        {
+                            t.Property("Id")
+                                .HasColumnName("OrderId");
+
+                            t.Property("IsConfirmatedOrder")
+                                .HasColumnName("Confirmated");
+                        });
+
+                    b.SplitToTable("Deliveries", null, t =>
+                        {
+                            t.Property("Id")
+                                .HasColumnName("OrderId");
+
+                            t.Property("DeliveryDescription");
+
+                            t.Property("DeliveryName");
+
+                            t.Property("DeliveryPrice");
+                        });
+
+                    b.SplitToTable("Payments", null, t =>
+                        {
+                            t.Property("Id")
+                                .HasColumnName("OrderId");
+
+                            t.Property("IsCompletePaymentOrder");
+
+                            t.Property("PaymentDescription");
+
+                            t.Property("PaymentName");
+                        });
                 });
 
             modelBuilder.Entity("Store.DTO.OrderItemDto", b =>
@@ -419,6 +455,12 @@ namespace Store.DTO.EF.Migrations
 
             modelBuilder.Entity("Store.DTO.OrderDto", b =>
                 {
+                    b.HasOne("Store.DTO.OrderDto", null)
+                        .WithOne()
+                        .HasForeignKey("Store.DTO.OrderDto", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Store.Web.App.User", null)
                         .WithMany("Orders")
                         .HasForeignKey("UserId");

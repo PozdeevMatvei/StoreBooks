@@ -175,6 +175,7 @@ namespace Store.Web.Controllers
             var orderDto = Order.Mapper.Map(order);
             orderDto.TotalCount = order.TotalCount;
             orderDto.TotalPrice = order.TotalPrice;
+            orderDto.IsConfirmatedOrder = true; // TODO Сделать с проверкой
             if (await _userService.IsAuthorization())
             {
                 await _userService.AddOrderAsync(orderDto);

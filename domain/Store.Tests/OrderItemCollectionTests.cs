@@ -62,7 +62,7 @@
             orderItemCollection.Add(existingOrderItem);
 
             orderItemCollection.Remove(existingOrderItem.BookId);
-            int actualCount = 1;
+            int actualCount = 0;
             int resultCount = orderItemCollection.Count;
             Assert.Equal(actualCount, resultCount);
         }
