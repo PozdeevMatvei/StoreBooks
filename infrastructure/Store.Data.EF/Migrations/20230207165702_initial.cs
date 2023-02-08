@@ -185,14 +185,8 @@ namespace Store.DTO.EF.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CellPhone = table.Column<string>(type: "nvarchar(17)", maxLength: 17, nullable: true),
                     TotalCount = table.Column<int>(type: "int", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    DeliveryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeliveryDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeliveryPrice = table.Column<decimal>(type: "money", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "money", nullable: false),
                     DeliveryParameters = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PaymentName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PaymentDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsCompletePaymentOrder = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PaymentParameters = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -204,6 +198,64 @@ namespace Store.DTO.EF.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConfirmatedOrders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Confirmated = table.Column<bool>(type: "bit", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConfirmatedOrders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_ConfirmatedOrders_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Deliveries",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    DeliveryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeliveryDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DeliveryPrice = table.Column<decimal>(type: "money", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Deliveries", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Deliveries_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    PaymentName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PaymentDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsCompletePaymentOrder = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Payments_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -221,10 +273,10 @@ namespace Store.DTO.EF.Migrations
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Orders_OrderId",
+                        name: "FK_OrderItems_ConfirmatedOrders_OrderId",
                         column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
+                        principalTable: "ConfirmatedOrders",
+                        principalColumn: "OrderId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -310,10 +362,19 @@ namespace Store.DTO.EF.Migrations
                 name: "Books");
 
             migrationBuilder.DropTable(
+                name: "Deliveries");
+
+            migrationBuilder.DropTable(
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "ConfirmatedOrders");
 
             migrationBuilder.DropTable(
                 name: "Orders");
